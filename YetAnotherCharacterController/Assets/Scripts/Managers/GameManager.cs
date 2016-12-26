@@ -73,7 +73,6 @@ public class GameManager : GameManagerSingle {
 
 	public void SetLastAvailableSpawner(Spawn spawner) {
 		bool safetyFlag = false;
-		Debug.Log("Lastavailable");
 		foreach (Spawn element in this.spawns) {
 			if (element == spawner) {
 				element.isActive = safetyFlag = true;

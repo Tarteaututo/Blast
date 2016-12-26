@@ -8,8 +8,6 @@ public class Spawn : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
 			if (!this.isActive) {
-				Debug.Log("Pouf");
-
 				GameManager.Instance.SetLastAvailableSpawner(this);
 			}
 		}

@@ -13,6 +13,7 @@ public class Loader : MonoBehaviour {
 
 	[Space(10)]
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
+	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
 
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
@@ -59,7 +60,8 @@ public class Loader : MonoBehaviour {
 
         if (this.isActive) {
             this.meshRenderer.material = this.activeMaterial;
-        } else {
+			this.SetLinkedPathFollowedPlateform();
+		} else {
             this.meshRenderer.material = this.inactiveMaterial;
         }
 
@@ -68,13 +70,17 @@ public class Loader : MonoBehaviour {
 
 	// Linked Animated Plateform
 	void SetLinkedAnimPlatform() {
-		Debug.Log(this.linkedAnimatedPlateform.Length);
-
 		foreach (AnimatedPlateform element in this.linkedAnimatedPlateform) {
 			element.SwitchState();
 		}
 	}
+	//
 
-	// Linked Animated Plateform
-
+	// Linked Path Followed Plateform
+	void SetLinkedPathFollowedPlateform() {
+		foreach (PathFollowedPlateform element in this.linkedPathFollowedPlateform) {
+			element.Move();
+		}
+	}
+	//
 }
