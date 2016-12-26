@@ -101,7 +101,7 @@ public class Bumper : MonoBehaviour {
 
 	void OnEndBump(FpsWalkerController charController) {
 		charController.playerControl = true;
-		if (charController.canDoubleJump)
+		if (charController.CanDoubleJump)
 			charController.doubleJumpActive = true;
 		this.isOnBump = false;
 	}

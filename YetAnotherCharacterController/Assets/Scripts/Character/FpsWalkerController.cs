@@ -15,7 +15,7 @@ public class FpsWalkerController: MonoBehaviour {
 	public float fallingDamageThreshold = 10.0f;
 	public bool airControl = false;
 	public float antiBumpFactor = .75f;
-	public bool canDoubleJump = false;
+	private bool canDoubleJump = false;
 
 	[Space(10)]
 	public bool slideWhenOverSlopeLimit = false;
@@ -40,11 +40,20 @@ public class FpsWalkerController: MonoBehaviour {
 	private float slideLimit;
 	private float rayDistance;
 	private Vector3 contactPoint;
-	[HideInInspector] public bool doubleJumpActive = false;
+	/*[HideInInspector]*/ public bool doubleJumpActive = false;
 
 	private float inputX;
 	private float inputY;
 	private bool inputJump;
+
+	public bool CanDoubleJump {
+		get {
+			return this.canDoubleJump;
+		}
+		set {
+			this.canDoubleJump = value;
+		}
+	}
 
 	void Start() {
 		this.controller = this.GetComponent<CharacterController>();

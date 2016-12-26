@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class GameManager : GameManagerSingle {
-	[SerializeField] public Transform player;
+	[HideInInspector] public Transform player;
 
 	[System.Serializable]
 	public class PlayerSettings {
@@ -10,7 +10,7 @@ public class GameManager : GameManagerSingle {
 		public bool canTriggerGun;
 		public bool canSwitchGun;
 		public bool canBlastGun;
-		public TriggerGun.GunMode gunMode;
+		public TriggerGun.GunMode startGunMode;
 
 		public void Set(FpsWalkerController charController, TriggerGun triggerGun) {
 			this.SetJumpMode(charController);
@@ -20,7 +20,7 @@ public class GameManager : GameManagerSingle {
 		}
 
 		public void SetJumpMode(FpsWalkerController charController) {
-			charController.canDoubleJump = this.canDoubleJump;
+			charController.CanDoubleJump = this.canDoubleJump;
 		}
 
 		public void SetCanGunMode(TriggerGun triggerGun) {
@@ -31,7 +31,7 @@ public class GameManager : GameManagerSingle {
 		}
 
 		public void SetGunMode(TriggerGun triggerGun) {
-			triggerGun.gunMode = this.gunMode;
+			triggerGun.gunMode = this.startGunMode;
 		}
 	}
 
@@ -43,6 +43,8 @@ public class GameManager : GameManagerSingle {
 
 	protected override void Awake() {
 		base.Awake();
+
+		this.player = GameObject.FindGameObjectWithTag("Player").transform;
 
 		if (player == null) {
 			Debug.LogError("GameManager : Player not set");
@@ -70,7 +72,7 @@ public class GameManager : GameManagerSingle {
 
 	public void SetLastAvailableSpawner(Spawn spawner) {
 		bool safetyFlag = false;
-
+		Debug.Log("Lastavailable");
 		foreach (Spawn element in this.spawns) {
 			if (element == spawner) {
 				element.isActive = safetyFlag = true;

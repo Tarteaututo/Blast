@@ -23,6 +23,5 @@ public class GameManagerSingle : MonoBehaviour {
 	}
 
 	protected virtual void Awake() {
-		DontDestroyOnLoad(this.gameObject);
 	}
 }

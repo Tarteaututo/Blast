@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class DebugHUD : MonoBehaviour {
@@ -8,6 +9,8 @@ public class DebugHUD : MonoBehaviour {
 	TriggerGun triggerGun;
 
 	GameManager.PlayerSettings playerSettings;
+
+	Color[] feedbackColors = new Color[2] { Color.red, Color.green };
 
 	void Awake() {
 		this.canvas = this.GetComponent<Canvas>();
@@ -32,8 +35,7 @@ public class DebugHUD : MonoBehaviour {
 	void SwitchDebugHUDActivation() {
 		bool state = this.canvas.isActiveAndEnabled;
 		this.canvas.enabled = !state;
-		this.mouseLook.lockCursor = state;
-		Cursor.visible = true;
+		this.mouseLook.SetCursorLock(state);
 
 		this.charController.enabled = state;
 		if (this.playerSettings.canTriggerGun)
@@ -43,30 +45,35 @@ public class DebugHUD : MonoBehaviour {
 	// HUD Driven
 
 	// Player Settings
-	public void CanDoubleJumpButton() {
-		this.playerSettings.canDoubleJump = !this.playerSettings.canDoubleJump;
+	public void CanDoubleJumpButton(Image feedback) {
+		bool newBool = !this.playerSettings.canDoubleJump; // tweak : sinon il garde une référence vers fpswalkercontroller ? WTF
+		this.playerSettings.canDoubleJump = newBool;// !this.playerSettings.canDoubleJump;
 		this.playerSettings.SetJumpMode(this.charController);
+
+		feedback.color = feedbackColors[this.playerSettings.canDoubleJump.GetHashCode()];
 	}
 
-	public void CanTriggerGunButton() {
+	public void CanTriggerGunButton(Image feedback) {
 		this.playerSettings.canTriggerGun = !this.playerSettings.canTriggerGun;
 		this.playerSettings.SetCanGunMode(this.triggerGun);
+
+		feedback.color = feedbackColors[this.playerSettings.canTriggerGun.GetHashCode()];
 	}
 
-	public void CanSwitchGunButton() {
+	public void CanSwitchGunButton(Image feedback) {
 		this.playerSettings.canSwitchGun = !this.playerSettings.canSwitchGun;
 		this.playerSettings.SetCanGunMode(this.triggerGun);
 		this.triggerGun.SwitchGunMode();
+
+		feedback.color = feedbackColors[this.playerSettings.canSwitchGun.GetHashCode()];
 	}
 
-	public void CanBlastGunButton() {
+	public void CanBlastGunButton(Image feedback) {
 		this.playerSettings.canBlastGun = !this.playerSettings.canBlastGun;
 		this.playerSettings.SetCanGunMode(this.triggerGun);
 		this.triggerGun.SwitchGunMode();
-	}
 
-	public void GunModeDropdown() {
-		
+		feedback.color = feedbackColors[this.playerSettings.canBlastGun.GetHashCode()];
 	}
 	// Buttons
 }
