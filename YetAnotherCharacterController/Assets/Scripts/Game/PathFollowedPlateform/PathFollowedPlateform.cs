@@ -5,12 +5,13 @@ using System.Collections.Generic;
 public class PathFollowedPlateform : MonoBehaviour {
 	public bool isMovingAtStart = false;
 	public float speed = 10f;
+	[Range(0f, 20f)] public float delay = 0;
 
 	public iTween.EaseType easeType = iTween.EaseType.linear;
 	public iTween.LoopType loopType = iTween.LoopType.none;
 
 	GameObject plateform;
-	[SerializeField] List<List<Transform>> path = new List<List<Transform>>();
+	[SerializeField] public List<List<Transform>> path = new List<List<Transform>>();
 	int currentPath = 0;
 
 	[HideInInspector] public bool isMoving;
@@ -35,18 +36,14 @@ public class PathFollowedPlateform : MonoBehaviour {
 	void Start() {
 		this.isMoving = this.isMovingAtStart;
 		if (this.isMoving)
-			this.Move(this.isMoving);
+			StartCoroutine(this.Move());
 	}
 
 	public void MoveSwitch(bool hasToMove) {
-		//Debug.Log("hasToMove " + hasToMove + " | isPaused " + this.isPaused + " | isMoving" + this.isMoving);
-
 		if (!hasToMove && this.isMoving) {
 			iTween.Pause(this.plateform);
 			this.isMoving = false;
 			this.isPaused = true;
-
-			//			this.OnEndMove();
 			return;
 		}
 
@@ -58,17 +55,21 @@ public class PathFollowedPlateform : MonoBehaviour {
 		}
 
 		if (hasToMove)
-			this.Move(hasToMove);
+			StartCoroutine(this.Move());
 	}
 
-	public void Move(bool hasToMove) {
-		
-		if (currentPath > this.path.Count - 1)
-			currentPath = 0;
+	public void MoveFlipFlop() {
+		StartCoroutine(this.Move());
+	}
 
-		iTween.MoveTo(this.plateform, iTween.Hash(
+	IEnumerator Move() {
+		yield return new WaitForSeconds(this.delay);
+		if (this.currentPath > this.path.Count - 1)
+			this.currentPath  = 0;
+		
+			iTween.MoveTo(this.plateform, iTween.Hash(
 		"name", "PathFollowedPlateform",
-		"path", this.path[currentPath++].ToArray(),
+		"path", this.path[this.currentPath++].ToArray(),
 		"looptype", this.loopType,
 		"speed", this.speed,
 		"onstart", "OnBeginMove",

@@ -10,6 +10,7 @@ public class Loader : MonoBehaviour {
     public bool isActiveAtStart;
 	public bool hasTimer = false;
 	[Range(0, 20f)]  public float timer = 3f;
+	public bool isTimerFlipFlopLinkedElements;
 
 	[Space(10)]
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
@@ -17,12 +18,14 @@ public class Loader : MonoBehaviour {
 
 	[Space(10)]
 	public bool isMovePausable = false;
+	public bool isLoaderHasToBeLockedByLinkedElements;
 
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
 	bool isActive;
     float timeUntilSwitchState;
 	bool isLockedByLinkedElements = true;
+	bool isLinkedElementFlipFlop = false;
 
 	void Start() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
@@ -39,6 +42,8 @@ public class Loader : MonoBehaviour {
             return;
 
 		if (other.CompareTag("Blast")) {
+			if (this.isTimerFlipFlopLinkedElements)
+				this.isLinkedElementFlipFlop = false;
 			this.SwitchState();
 		}
 	}
@@ -46,8 +51,11 @@ public class Loader : MonoBehaviour {
     void Update() {
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
 
-			if (this.IsLinkedPathFollowedPlateformFinished())
+			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
+				if (this.isTimerFlipFlopLinkedElements)
+					this.isLinkedElementFlipFlop = true;
 				this.SwitchState();
+			}
         }
     }
 
@@ -86,7 +94,12 @@ public class Loader : MonoBehaviour {
 	// Linked Path Followed Plateform
 	void SetLinkedPathFollowedPlateform() {
 		foreach (PathFollowedPlateform element in this.linkedPathFollowedPlateform) {
-			element.MoveSwitch(this.isActive);
+			
+		if (this.isTimerFlipFlopLinkedElements && this.isLinkedElementFlipFlop)
+				element.MoveFlipFlop();
+			else
+				element.MoveSwitch(this.isActive);
+
 			this.isLockedByLinkedElements = false;
 		}
 	}
