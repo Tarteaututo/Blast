@@ -15,10 +15,14 @@ public class Loader : MonoBehaviour {
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
 
+	[Space(10)]
+	public bool isMovePausable = false;
+
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
 	bool isActive;
     float timeUntilSwitchState;
+	bool isLockedByLinkedElements = true;
 
 	void Start() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
@@ -27,11 +31,11 @@ public class Loader : MonoBehaviour {
         this.timeUntilSwitchState = Time.time;
 
         this.isActive = this.isActiveAtStart;
-        this.SetState();
+        this.SetState(true);
 	}
 
 	void OnTriggerEnter(Collider other) {
-        if (this.hasTimer && this.isActive != this.isActiveAtStart)
+        if (!this.isMovePausable && this.hasTimer && this.isActive != this.isActiveAtStart)
             return;
 
 		if (other.CompareTag("Blast")) {
@@ -41,7 +45,9 @@ public class Loader : MonoBehaviour {
 
     void Update() {
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
-            this.SwitchState();
+
+			if (this.IsLinkedPathFollowedPlateformFinished())
+				this.SwitchState();
         }
     }
 
@@ -50,21 +56,22 @@ public class Loader : MonoBehaviour {
             return;
 
         this.isActive = !this.isActive;
-        this.SetState();
+        this.SetState(false);
         if (this.hasTimer)
             this.timeUntilSwitchState = Time.time + this.timer;
     }
 
-    void SetState() {
+    void SetState(bool isInit) {
         this.blastAnimator.SetBool("IsLoaded", this.isActive);
 
         if (this.isActive) {
             this.meshRenderer.material = this.activeMaterial;
-			this.SetLinkedPathFollowedPlateform();
 		} else {
             this.meshRenderer.material = this.inactiveMaterial;
         }
 
+		if (!isInit)
+			this.SetLinkedPathFollowedPlateform();
 		this.SetLinkedAnimPlatform();
     }
 
@@ -79,8 +86,23 @@ public class Loader : MonoBehaviour {
 	// Linked Path Followed Plateform
 	void SetLinkedPathFollowedPlateform() {
 		foreach (PathFollowedPlateform element in this.linkedPathFollowedPlateform) {
-			element.Move();
+			element.MoveSwitch(this.isActive);
+			this.isLockedByLinkedElements = false;
 		}
+	}
+
+	bool IsLinkedPathFollowedPlateformFinished() {
+		if (this.isLockedByLinkedElements)
+			return true;
+
+		bool isAllFinished = true;
+		foreach (PathFollowedPlateform element in this.linkedPathFollowedPlateform) {
+			if (element.isMoving) {
+				isAllFinished = false;
+			}
+		}
+		this.isLockedByLinkedElements = isAllFinished;
+		return isAllFinished;
 	}
 	//
 }

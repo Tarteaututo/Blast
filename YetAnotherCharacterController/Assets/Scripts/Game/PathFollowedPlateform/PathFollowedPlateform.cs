@@ -10,41 +10,65 @@ public class PathFollowedPlateform : MonoBehaviour {
 	public iTween.LoopType loopType = iTween.LoopType.none;
 
 	GameObject plateform;
-	List<Transform> path = new List<Transform>();
-	bool isMoving;
+	[SerializeField] List<List<Transform>> path = new List<List<Transform>>();
+	int currentPath = 0;
+
+	[HideInInspector] public bool isMoving;
+	[HideInInspector] public bool isPaused = false;
+
 
 	void Awake() {
 		this.plateform = this.transform.FindChild("Plateform").gameObject;
-		foreach (Transform element in this.transform.FindChild("Path")) {
-			this.path.Add(element);
+
+		Transform pathFolder = this.transform.FindChild("PathsFolder");
+		
+		foreach (Transform pathElement in pathFolder) {
+			List<Transform> pathContainer = new List<Transform>();
+			foreach(Transform position in pathElement) {
+				pathContainer.Add(position);
+			}
+			this.path.Add(pathContainer);
 		}
+
 	}
 
 	void Start() {
 		this.isMoving = this.isMovingAtStart;
-		if (this.isMoving) {
-			//this.Move();
+		if (this.isMoving)
+			this.Move(this.isMoving);
+	}
+
+	public void MoveSwitch(bool hasToMove) {
+		//Debug.Log("hasToMove " + hasToMove + " | isPaused " + this.isPaused + " | isMoving" + this.isMoving);
+
+		if (!hasToMove && this.isMoving) {
+			iTween.Pause(this.plateform);
+			this.isMoving = false;
+			this.isPaused = true;
+
+			//			this.OnEndMove();
+			return;
 		}
+
+		if (this.isPaused) {
+			this.isPaused = false;
+			this.isMoving = true;
+			iTween.Resume(this.plateform);
+			return;
+		}
+
+		if (hasToMove)
+			this.Move(hasToMove);
 	}
 
-	public void Move() {
+	public void Move(bool hasToMove) {
+		
+		if (currentPath > this.path.Count - 1)
+			currentPath = 0;
 
-	/*
-	
-	TODO :
-	Loader.LockByLinkedObject : faire réactiver le timer par itween.
-
-	set directement en tableau plutot qu'en liste
-	
-	*/
-
-	Transform[] currentPath = new Transform[this.path.Count];
-	for (int i = 0; i < this.path.Count; i++) {
-		currentPath[i] = this.path[i];
-	}
-
-	iTween.MoveTo(this.plateform, iTween.Hash(
-		"path", currentPath,
+		iTween.MoveTo(this.plateform, iTween.Hash(
+		"name", "PathFollowedPlateform",
+		"path", this.path[currentPath++].ToArray(),
 		"looptype", this.loopType,
 		"speed", this.speed,
 		"onstart", "OnBeginMove",
@@ -60,11 +84,36 @@ public class PathFollowedPlateform : MonoBehaviour {
 	}
 
 	void OnBeginMove() {
-
+		this.isMoving = true;
 	}
 
 	void OnEndMove() {
-
+		if (this.loopType == iTween.LoopType.none) 
+			iTween.Stop(this.plateform);
+		this.isMoving = false;
+		this.isPaused = false;
 	}
 
+	/*
+	TODO : 
+	comportement voulu
+		Si loopType == none
+			bloquer l'animation du loader, empecher la réactivation.
+		si '' == pingpong ou loop
+			bloquer l'animation du loader, mais permettre la réactivation.
+			Mettre en pause le mouvement à la désactivation et le réactiver
+			si réactivé.
+	
+	void OnBeginMove() {
+		if (this.loopType == iTween.LoopType.none)	
+			this.isMoving = true;
+	}
+
+	void OnEndMove() {
+		if (this.loopType == iTween.LoopType.none) {
+			iTween.Stop(this.plateform);
+			this.isMoving = false;
+		}
+	}
+	*/
 }
