@@ -113,9 +113,6 @@ public class FpsWalkerController: MonoBehaviour {
 				moveDirection = myTransform.TransformDirection(moveDirection) * speed;
 			}
 
-			if (this.inputJump)
-				moveDirection.y = jumpSpeed;
-
 			if (!this.doubleJumpActive)
 				this.doubleJumpActive = true;
 
@@ -133,19 +130,13 @@ public class FpsWalkerController: MonoBehaviour {
 				moveDirection = myTransform.TransformDirection(moveDirection);
 			}
 
-			if (this.canDoubleJump && this.doubleJumpActive) {
-				if (this.inputJump) {
-					moveDirection.y = jumpSpeed;
-					this.doubleJumpActive = false;
-				}
-			}
+
 
 		}
 
 		moveDirection.y = Mathf.Clamp(moveDirection.y - (this.gravity * Time.deltaTime), -this.gravity * 0.6f, this.gravity);
 
 		// Move the controller, and set grounded true or false depending on whether we're standing on something
-		grounded = (controller.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
 
 	}
 
@@ -153,9 +144,22 @@ public class FpsWalkerController: MonoBehaviour {
 
 		this.inputX = Input.GetAxis("Horizontal");
 		this.inputY = Input.GetAxis("Vertical");
-
 		this.inputJump = Input.GetButtonDown("Jump");
 
+		if (grounded) {
+			if (this.inputJump) {
+				moveDirection.y = jumpSpeed;
+			}
+		} else if (this.canDoubleJump && this.doubleJumpActive) {
+			if (this.inputJump) {
+				moveDirection.y = jumpSpeed;
+				this.doubleJumpActive = false;
+			}
+		}
+
+		grounded = (controller.Move(moveDirection * Time.deltaTime) & CollisionFlags.Below) != 0;
+
+	
 		// If the run button is set to toggle, then switch between walk/run speed. (We use Update for this...
 		// FixedUpdate is a poor place to use GetButtonDown, since it doesn't necessarily run every frame and can miss the event)
 		if (toggleRun && grounded && Input.GetButtonDown("Run"))
@@ -165,6 +169,15 @@ public class FpsWalkerController: MonoBehaviour {
 	void LateUpdate() {
 		this.mouseLook.LookRotation(this.transform, this.playerCam.transform);
 
+	}
+
+	bool IsGrounded() {
+		Ray ray = new Ray(this.transform.position, -Vector3.up);
+		RaycastHit hit;
+		if (Physics.SphereCast(this.transform.position, 0.5f, -Vector3.up, out hit, 1f)) {
+			return true;
+		}
+		return false;
 	}
 
 	// Store point that we're in contact with for use in FixedUpdate if needed
