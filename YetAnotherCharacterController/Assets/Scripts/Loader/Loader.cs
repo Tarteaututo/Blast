@@ -15,6 +15,7 @@ public class Loader : MonoBehaviour {
 	[Space(10)]
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
+	[SerializeField] BumperLinkedLoader[] linkedBumper = new BumperLinkedLoader[0];
 
 	[Space(10)]
 	public bool isMovePausable = false;
@@ -60,6 +61,7 @@ public class Loader : MonoBehaviour {
 		}
 
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
+			this.SetLinkedBumper(false);
 
 			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
 				if (this.isTimerFlipFlopLinkedElements)
@@ -89,6 +91,9 @@ public class Loader : MonoBehaviour {
 		} else {
             this.meshRenderer.material = this.inactiveMaterial;
         }
+
+		this.SetLinkedBumper(this.isActive);
+
 
 		if (!isInit)
 			this.SetLinkedPathFollowedPlateform();
@@ -130,4 +135,11 @@ public class Loader : MonoBehaviour {
 		return isAllFinished;
 	}
 	//
+
+	// Linked Bumper
+	void SetLinkedBumper(bool activation) {
+		for (int i = 0; i < this.linkedBumper.Length; i++) {
+			this.linkedBumper[i].SwitchByLoader(activation);
+		}
+	}
 }

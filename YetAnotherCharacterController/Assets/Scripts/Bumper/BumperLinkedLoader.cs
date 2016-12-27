@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BumperLinkedLoader : MonoBehaviour {
+public class BumperLinkedLoader : Bumper {
 
-	// Use this for initialization
-	void Start () {
-	
+	protected override void Start() {
+		base.Start();
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void SwitchByLoader(bool isActivate) {
+		this.isBumpActive = isActivate;
+		this.isOnBump = true;
+		StartCoroutine(SetActivation());
 	}
 }
