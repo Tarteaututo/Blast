@@ -7,12 +7,15 @@ public class LinkedParticlePoolerSettings {
 
 	[System.Serializable]
 	public class Settings {
-		public ParticlePooler.ActiveRandom activeRandom;
 		public bool isEnabled;
+		public ParticlePooler.ActiveRandom activeRandom;
+		public Material material;
 
 		public void Initialize(ParticlePooler pooler) {
 			pooler.activeRandom = this.activeRandom;
 			pooler.enabled = this.isEnabled;
+			if (!this.material)
+				this.material = pooler.objectMaterial;
 		}
 	}
 
@@ -27,9 +30,13 @@ public class LinkedParticlePoolerSettings {
 		if (activation) {
 			this.linkedPooler.SetPoolerAble(this.onLoadSettings.isEnabled);
 			this.linkedPooler.activeRandom = this.onLoadSettings.activeRandom;
+			if (this.onLoadSettings.material)
+				this.linkedPooler.objectMaterial = this.onLoadSettings.material;
 		} else {
 			this.linkedPooler.SetPoolerAble(this.onStartSettings.isEnabled);
 			this.linkedPooler.activeRandom = this.onStartSettings.activeRandom;
+			if (this.onStartSettings.material)
+				this.linkedPooler.objectMaterial = this.onStartSettings.material;
 		}
 	}
 }

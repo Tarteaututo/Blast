@@ -39,6 +39,7 @@ public class ParticlePooler : MonoBehaviour {
 	}
 	public FloatRange rangeCooldown, scaleRange, velocityRange;
 
+
 	[System.Serializable]
 	public struct ActiveRandom {
 		public bool cooldown;
@@ -72,14 +73,16 @@ public class ParticlePooler : MonoBehaviour {
 		MeshPooled spawn = prefab.GetPooledInstance<MeshPooled>(this.PoolFolder);
 		spawn.transform.localPosition = this.transform.position;
 
-		this.RandomHandler(spawn);
-
-		spawn.SetMaterials(this.objectMaterial);
+		this.RandomHandler(spawn, prefab);
+		this.SetMaterials(spawn, prefab);
 	}
 
-	void RandomHandler(MeshPooled spawn) {
+	void RandomHandler(MeshPooled spawn, MeshPooled prefab) {
 		if (this.activeRandom.scale)
 			spawn.transform.localScale = Vector3.one * this.scaleRange.RandomInRange;
+		else
+			spawn.transform.localScale = prefab.transform.localScale;
+		
 		if (this.activeRandom.rotation)
 			spawn.transform.localRotation = Random.rotation;
 		if (this.activeRandom.velocity) {
@@ -87,6 +90,11 @@ public class ParticlePooler : MonoBehaviour {
 		} else {
 			spawn.rb.velocity = this.transform.up * velocity;
 		}
+	}
+
+	void SetMaterials(MeshPooled spawn, MeshPooled prefab) {
+		spawn.SetMaterials(this.objectMaterial);
+
 	}
 
 	// Loader handler
