@@ -3,7 +3,8 @@ using System.Collections;
 
 public class BlastGun : MonoBehaviour {
 	public Transform blastGunWeaponOffset;
-	
+	public FeedbackAmmoBlastGun feedbackAmmo;
+
 	public GameObject projectilePrefab;
 	public float projectileSpeed = 1f;
 	public iTween.EaseType easeType = iTween.EaseType.linear;
@@ -75,6 +76,7 @@ public class BlastGun : MonoBehaviour {
 				this.FeedbackReloadAmmo();
 			}
 			this.ammo = Mathf.Clamp(value, 0, this.ammoMax);
+			feedbackAmmo.SetAmmo(this.ammo, this.ammoMax);
 		}
 	}
 
