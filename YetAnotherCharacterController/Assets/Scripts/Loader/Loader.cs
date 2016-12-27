@@ -16,6 +16,8 @@ public class Loader : MonoBehaviour {
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
 	[SerializeField] BumperLinkedLoader[] linkedBumper = new BumperLinkedLoader[0];
+	[SerializeField] LinkedParticlePoolerSettings[] linkedPoolerSettings = new LinkedParticlePoolerSettings[0];
+	[SerializeField] PoolerRing[] linkedPoolerRing = new PoolerRing[0];
 
 	[Space(10)]
 	public bool isMovePausable = false;
@@ -38,6 +40,13 @@ public class Loader : MonoBehaviour {
 
         this.isActive = this.isActiveAtStart;
         this.SetState(true);
+		this.InitializePoolerSettings();
+	}
+
+	void InitializePoolerSettings() {
+		foreach(LinkedParticlePoolerSettings pooler in this.linkedPoolerSettings) {
+			pooler.Awake();
+		}
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -94,7 +103,8 @@ public class Loader : MonoBehaviour {
         }
 
 		this.SetLinkedBumper(this.isActive);
-
+		this.SetLinkedPooler(this.isActive);
+		this.SetLinkedPoolerRing(this.isActive);
 
 		if (!isInit)
 			this.SetLinkedPathFollowedPlateform();
@@ -142,6 +152,19 @@ public class Loader : MonoBehaviour {
 	void SetLinkedBumper(bool activation) {
 		for (int i = 0; i < this.linkedBumper.Length; i++) {
 			this.linkedBumper[i].SwitchByLoader(activation);
+		}
+	}
+
+	// Linked PoolerRing
+	void SetLinkedPoolerRing(bool activation) {
+		for (int i = 0; i < this.linkedPoolerRing.Length; i++) {
+			this.linkedPoolerRing[i].SetPoolersActivation(activation);
+		}
+	}
+
+	void SetLinkedPooler(bool activation) {
+		for (int i = 0; i < this.linkedPoolerSettings.Length; i++) {
+			this.linkedPoolerSettings[i].Load(activation);
 		}
 	}
 }
