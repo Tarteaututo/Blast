@@ -79,6 +79,7 @@ public class GameManager : GameManagerSingle {
 			} else {
 				element.isActive = false;
 			}
+			element.feedbackSpawner.SetFeedbackColors(element.isActive, element.isDiscovered);
 		}
 
 		if (!safetyFlag)
