@@ -5,7 +5,7 @@ public class Spawn : MonoBehaviour {
 
 
 	public bool isActive = false;
-	public bool isDiscovered;
+	[HideInInspector] public bool isDiscovered;
 
 	[Range(0f, 10f)] public int reloadAmmo = 3;
 
