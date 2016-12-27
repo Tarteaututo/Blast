@@ -88,4 +88,9 @@ public class ParticlePooler : MonoBehaviour {
 			spawn.rb.velocity = this.transform.up * velocity;
 		}
 	}
+
+	// Loader handler
+	public void SetPoolerAble(bool activation) {
+		this.enabled = activation;
+	}
 }

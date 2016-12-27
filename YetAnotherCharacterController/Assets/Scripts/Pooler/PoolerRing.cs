@@ -46,4 +46,11 @@ public class PoolerRing : MonoBehaviour {
 		poolerList[poolerList.Count - 1].transform.localRotation = Quaternion.Euler(this.tiltAngle, 0, 0);
 		poolerList[poolerList.Count - 1].objectMaterial = objectMaterials[index % objectMaterials.Length];
 	}
+
+	public void SetPoolersActivation(bool activation) {
+		foreach (ParticlePooler pooler in this.poolerList) {
+			pooler.SetPoolerAble(activation);
+		}
+	}
+
 }
