@@ -8,12 +8,14 @@ public class SwitchGun : MonoBehaviour {
 	PlayerManager playerManager;
 	Camera playerCam;
 
+	BlastGun blastGun;
 	WeaponOffset weaponOffset;
 	GameObject effect;
 
 	void Start() {
 		this.playerManager = this.GetComponent<PlayerManager>();
 		this.playerCam = this.GetComponentInChildren<Camera>();
+		this.blastGun = this.GetComponent<BlastGun>();
 		this.weaponOffset = this.playerManager.weaponOffset;
 	}
 
@@ -29,9 +31,18 @@ public class SwitchGun : MonoBehaviour {
 
 			if (bumper) {
 				bumper.Switch();
+				return;
+			}
+
+			Charger charger = hit.collider.transform.parent.GetComponentInParent<Charger>();
+
+			if (charger) {
+				charger.Reload(this.blastGun);
 			}
 		}
 	}
+
+
 
 
 }
