@@ -66,6 +66,7 @@ public class Loader : MonoBehaviour {
 			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
 				if (this.isTimerFlipFlopLinkedElements)
 					this.isLinkedElementFlipFlop = true;
+
 				this.SwitchState();
 			}
         }
@@ -104,6 +105,7 @@ public class Loader : MonoBehaviour {
 	void SetLinkedAnimPlatform() {
 		foreach (AnimatedPlateform element in this.linkedAnimatedPlateform) {
 			element.SwitchState();
+			// Ici : gérer le non Flip flop
 		}
 	}
 	//
