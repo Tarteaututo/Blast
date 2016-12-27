@@ -42,6 +42,7 @@ public class Charger : MonoBehaviour {
 
 	void Update() {
 		this.feedbackAmmoOffset.Rotate(Vector3.forward);
+		this.feedbackAmmoOffset.Rotate(Vector3.up);
 	}
 
 	public void Reload(BlastGun blastGun) {
@@ -52,6 +53,14 @@ public class Charger : MonoBehaviour {
 		}
 	}
 
+	public void RechargeCharger() {
+		this.Ammo = this.ammoMax;
+		foreach (Transform element in this.feedbackAmmoList) {
+			if (!element.gameObject.activeSelf)
+				element.gameObject.SetActive(true);
+		}
+	}
+	
 	void UnactiveProjectile() {
 		this.GetFirstVisibleProjectile().gameObject.SetActive(false);
 		Instantiate(this.particulesLowAmmo, this.feedbackAmmoOffset.position, Quaternion.identity);
