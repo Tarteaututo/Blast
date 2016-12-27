@@ -22,6 +22,7 @@ public class Loader : MonoBehaviour {
 
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
+	ScaleWithTimer animationTimer;
 	bool isActive;
     float timeUntilSwitchState;
 	bool isLockedByLinkedElements = true;
@@ -30,6 +31,7 @@ public class Loader : MonoBehaviour {
 	void Start() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
+		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
 
         this.timeUntilSwitchState = Time.time;
 
@@ -49,6 +51,14 @@ public class Loader : MonoBehaviour {
 	}
 
     void Update() {
+		if (this.isActive) {
+			if (this.timeUntilSwitchState > Time.time) {
+				this.animationTimer.UpdateScale(this.timeUntilSwitchState - Time.time, this.timer);
+			} else {
+				this.animationTimer.UpdateScale(1, 1);
+			}
+		}
+
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
 
 			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
@@ -65,8 +75,10 @@ public class Loader : MonoBehaviour {
 
         this.isActive = !this.isActive;
         this.SetState(false);
-        if (this.hasTimer)
+        if (this.hasTimer) {
             this.timeUntilSwitchState = Time.time + this.timer;
+			//this.animationTimer.isOnTimer = true;
+		}
     }
 
     void SetState(bool isInit) {
