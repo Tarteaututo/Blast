@@ -11,6 +11,7 @@ public class BlastGun : MonoBehaviour {
 	public GameObject lowAmmoParticlePrefab;
 	public GameObject lowAmmoTrailParticlePrefab;
 	[Space(10)]
+	public int ammoAtStart = 3;
 	public int ammoMax = 3;
 
 	private PlayerManager playerManager;
@@ -22,7 +23,7 @@ public class BlastGun : MonoBehaviour {
 		this.playerManager = this.GetComponent<PlayerManager>();
 		this.weaponOffset = this.playerManager.weaponOffset;
 		this.destinationOffset = this.blastGunWeaponOffset.transform.GetChild(0);
-		this.Ammo = this.ammoMax;
+		this.Ammo = this.ammoAtStart;
 	}
 
 	public void Launch() {
@@ -70,7 +71,14 @@ public class BlastGun : MonoBehaviour {
 			return this.ammo;
 		}
 		set {
+			if (this.ammo < value) {
+				this.FeedbackReloadAmmo();
+			}
 			this.ammo = Mathf.Clamp(value, 0, this.ammoMax);
 		}
+	}
+
+	void FeedbackReloadAmmo() {
+
 	}
 }
