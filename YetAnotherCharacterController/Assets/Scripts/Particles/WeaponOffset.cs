@@ -19,6 +19,8 @@ public class WeaponOffset : MonoBehaviour {
 		}
 	}
 
+	// ICI faire les feedback de ammo
+
 	public void LaunchEffects(TriggerGun.GunMode gunMode) {
 		if (gunMode == TriggerGun.GunMode.SWITCH)
 			StartCoroutine(this.LaunchSwitchEffect());
