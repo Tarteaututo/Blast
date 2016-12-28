@@ -7,10 +7,14 @@ public class RotationAnimPlateform : AnimatedPlateform {
 
 	bool isHorizontal;
 
+	protected override void Awake() {
+		base.Awake();
+		this.isHorizontal = this.isHorizontalAtStart;
+	}
+
 	protected override void Start() {
 		base.Start();
-		// Tweak : le Loader switch automatiquement la valeur au start, ici on mets l'inverse dans le start pour avoir la bonne.
-		this.isHorizontal = this.isHorizontalAtStart;
+		
 
 		this.SetState();
 	}

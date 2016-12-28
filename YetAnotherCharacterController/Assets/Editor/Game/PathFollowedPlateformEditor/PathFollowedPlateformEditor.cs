@@ -8,12 +8,12 @@ using Rotorz.ReorderableList;
 [CanEditMultipleObjects]
  //[ExecuteInEditMode] // en ai-je besoin  ?
 public class PathFollowedPlateformEditor : Editor {
-	SerializedProperty _pathProperty;
+	//SerializedProperty _pathProperty;
 
 	List<Transform> myList = new List<Transform>();
 
 	void OnEnable() {
-		this._pathProperty = serializedObject.FindProperty("path");
+		//this._pathProperty = serializedObject.FindProperty("path");
 		
 	}
 

@@ -29,7 +29,7 @@ public class BlastGun : MonoBehaviour {
 
 	public void Launch() {
 		if (this.Ammo <= 0) {
-			GameObject particleWorld = Instantiate(this.lowAmmoParticlePrefab, this.blastGunWeaponOffset.transform.position, this.blastGunWeaponOffset.transform.rotation) as GameObject;
+			Instantiate(this.lowAmmoParticlePrefab, this.blastGunWeaponOffset.transform.position, this.blastGunWeaponOffset.transform.rotation);
 			return;
 		}
 		this.Ammo -= 1;

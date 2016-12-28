@@ -171,15 +171,6 @@ public class FpsWalkerController: MonoBehaviour {
 
 	}
 
-	bool IsGrounded() {
-		Ray ray = new Ray(this.transform.position, -Vector3.up);
-		RaycastHit hit;
-		if (Physics.SphereCast(this.transform.position, 0.5f, -Vector3.up, out hit, 1f)) {
-			return true;
-		}
-		return false;
-	}
-
 	// Store point that we're in contact with for use in FixedUpdate if needed
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 		contactPoint = hit.point;

@@ -13,7 +13,7 @@ public class Loader : MonoBehaviour {
 	public bool isTimerFlipFlopLinkedElements;
 
 	[Space(10)]
-	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
+	[SerializeField] LinkedAnimatedPlateformSettings[] linkedAnimatedPlateform = new LinkedAnimatedPlateformSettings[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
 	[SerializeField] BumperLinkedLoader[] linkedBumper = new BumperLinkedLoader[0];
 	[SerializeField] LinkedParticlePoolerSettings[] linkedPoolerSettings = new LinkedParticlePoolerSettings[0];
@@ -40,12 +40,21 @@ public class Loader : MonoBehaviour {
 
         this.isActive = this.isActiveAtStart;
         this.SetState(true);
-		this.InitializePoolerSettings();
+		this.InitializeLinkedElements();
+		
+		if (this.hasTimer) {
+			this.isActive = !this.isActiveAtStart;
+			this.SwitchState();
+		}
 	}
 
-	void InitializePoolerSettings() {
+	void InitializeLinkedElements() {
 		foreach(LinkedParticlePoolerSettings pooler in this.linkedPoolerSettings) {
 			pooler.Awake();
+		}
+
+		foreach (LinkedAnimatedPlateformSettings plateform in this.linkedAnimatedPlateform) {
+			plateform.Initialize();
 		}
 	}
 
@@ -113,8 +122,8 @@ public class Loader : MonoBehaviour {
 
 	// Linked Animated Plateform
 	void SetLinkedAnimPlatform() {
-		foreach (AnimatedPlateform element in this.linkedAnimatedPlateform) {
-			element.SwitchState();
+		foreach (LinkedAnimatedPlateformSettings element in this.linkedAnimatedPlateform) {
+			element.animatedPlateform.SwitchState();
 			// Ici : gérer le non Flip flop
 		}
 	}
