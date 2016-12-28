@@ -16,15 +16,17 @@ public class NewLoader: MonoBehaviour {
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
 	ScaleWithTimer animationTimer;
-	bool isActive;
+	private bool isActive;
 	float timeUntilSwitchState;
+	private bool isOnTimer = false;
+
+	public delegate void LinkedElement(bool isActive);
+	public LinkedElement linkedElements;
 
 	void Awake() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
-
-		this.timeUntilSwitchState = Time.time;
 
 		this.isActive = this.isActiveAtStart;
 		this.SetState();
@@ -32,8 +34,8 @@ public class NewLoader: MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.CompareTag("Blast")) {
-			StartCoroutine(this.OnSwitchState(false));
+		if (other.CompareTag("Blast") && !this.isOnTimer) {
+				StartCoroutine(this.OnSwitchState(false));
 		}
 	}
 
@@ -43,6 +45,7 @@ public class NewLoader: MonoBehaviour {
 				if (this.timeUntilSwitchState > Time.time) {
 					this.animationTimer.UpdateScale(this.timeUntilSwitchState - Time.time, this.timer);
 				} else {
+					this.isOnTimer = false;
 					this.animationTimer.UpdateScale(1, 1);
 					this.isActive = !this.isActive;
 					SetState();
@@ -63,6 +66,8 @@ public class NewLoader: MonoBehaviour {
 		}
 
 		if (this.hasTimer && !isInit) {
+			this.isOnTimer = true;
+
 			yield return new WaitForSeconds(this.timer);
 		}
 	}
@@ -75,5 +80,7 @@ public class NewLoader: MonoBehaviour {
 		} else {
 			this.meshRenderer.material = this.inactiveMaterial;
 		}
+		
+			this.linkedElements(this.isActive);
 	}
 }

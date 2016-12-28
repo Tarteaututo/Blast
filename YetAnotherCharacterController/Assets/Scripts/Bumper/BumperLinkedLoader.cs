@@ -21,10 +21,20 @@ public class BumperLinkedLoader : Bumper {
 	}
 
 	public void SwitchByLoader(bool isActivate) {
-		if (!this.isActiveAtStart)
+		
+		if (!this.isActiveAtStart) {
 			isActivate = !isActivate;
-	
+			Debug.Log("Switch inverted");
+		}
+
 		this.isBumpActive = isActivate;
+
+		this.isOnBump = true;
+		StartCoroutine(SetActivation());
+	}
+
+	public void NewSwitchByLoader() {
+		this.isBumpActive = !this.isBumpActive;
 
 		this.isOnBump = true;
 		StartCoroutine(SetActivation());
