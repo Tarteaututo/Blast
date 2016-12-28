@@ -21,7 +21,11 @@ public class BumperLinkedLoader : Bumper {
 	}
 
 	public void SwitchByLoader(bool isActivate) {
+		if (!this.isActiveAtStart)
+			isActivate = !isActivate;
+	
 		this.isBumpActive = isActivate;
+
 		this.isOnBump = true;
 		StartCoroutine(SetActivation());
 	}

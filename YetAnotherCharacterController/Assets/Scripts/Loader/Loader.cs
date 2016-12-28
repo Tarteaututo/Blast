@@ -171,6 +171,10 @@ public class Loader : MonoBehaviour {
 		for (int i = 0; i < this.linkedBumper.Length; i++) {
 			this.linkedBumper[i].SwitchByLoader(activation);
 		}
+
+		for (int i = 0; i < this.linkedBumperSettings.Length; i++) {
+			this.linkedBumperSettings[i].bumper.SwitchByLoader(activation);
+		}
 	}
 
 	// Linked PoolerRing
