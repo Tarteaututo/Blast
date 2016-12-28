@@ -16,6 +16,7 @@ public class Loader : MonoBehaviour {
 	[SerializeField] LinkedAnimatedPlateformSettings[] linkedAnimatedPlateform = new LinkedAnimatedPlateformSettings[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
 	[SerializeField] BumperLinkedLoader[] linkedBumper = new BumperLinkedLoader[0];
+	[SerializeField] LinkedBumperSettings[] linkedBumperSettings = new LinkedBumperSettings[0];
 	[SerializeField] LinkedParticlePoolerSettings[] linkedPoolerSettings = new LinkedParticlePoolerSettings[0];
 	[SerializeField] PoolerRing[] linkedPoolerRing = new PoolerRing[0];
 
@@ -31,6 +32,11 @@ public class Loader : MonoBehaviour {
 	bool isLockedByLinkedElements = true;
 	bool isLinkedElementFlipFlop = false;
 
+	void Awake() {
+		this.InitializeLinkedElements();
+
+	}
+
 	void Start() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
@@ -40,7 +46,6 @@ public class Loader : MonoBehaviour {
 
         this.isActive = this.isActiveAtStart;
         this.SetState(true);
-		this.InitializeLinkedElements();
 		
 		if (this.hasTimer) {
 			this.isActive = !this.isActiveAtStart;
@@ -55,6 +60,10 @@ public class Loader : MonoBehaviour {
 
 		foreach (LinkedAnimatedPlateformSettings plateform in this.linkedAnimatedPlateform) {
 			plateform.Initialize();
+		}
+
+		foreach (LinkedBumperSettings bumper in this.linkedBumperSettings) {
+			bumper.Initialize();
 		}
 	}
 
@@ -79,7 +88,7 @@ public class Loader : MonoBehaviour {
 		}
 
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
-			this.SetLinkedBumper(false);
+			this.SetLinkedBumper(this.isActive);
 
 			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
 				if (this.isTimerFlipFlopLinkedElements)
