@@ -1,6 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+TODO : Editor qui montre les bool en readonly
+*/
+
+
 public class TriggerGun : MonoBehaviour {
 	public enum GunMode {
 		SWITCH,

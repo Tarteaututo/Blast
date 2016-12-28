@@ -2,9 +2,9 @@
 using System.Collections;
 
 public class Bumper : MonoBehaviour {
-	[SerializeField] Transform destination;
-	[SerializeField] Material activeMaterial;
-	[SerializeField] Material inactiveMaterial;
+	[SerializeField] protected Transform destination;
+	[SerializeField] protected Material activeMaterial;
+	[SerializeField] protected Material inactiveMaterial;
 
 	public bool isBumpActiveAtStart = true;
 	public float speed = 15f;
@@ -14,24 +14,22 @@ public class Bumper : MonoBehaviour {
 	public bool hasTimer = false;
 	[Range(0, 20f)] public float timer = 1;
 
-	MeshRenderer overlayRenderer;
-	Animator switchAnimator;
-	[HideInInspector] ParticleSystem particleSystem;
-	private bool isOnBump = false;
-	private bool isOnTimer = false;
-	bool isBumpActive;
+	protected MeshRenderer overlayRenderer;
+	[HideInInspector] protected ParticleSystem particleSystem;
+	protected bool isOnBump = false;
+	protected bool isOnTimer = false;
+	protected bool isBumpActive;
 
-	void Start() {
+	protected virtual void Start() {
 		this.particleSystem = this.GetComponentInChildren<ParticleSystem>();
 		this.overlayRenderer = this.GetComponentInChildren<MeshRenderer>();
-		this.switchAnimator = this.GetComponentInChildren<Animator>();
 
 		this.isBumpActive = this.isBumpActiveAtStart;
 
 		this.SetSwitchValues();
 	}
 
-	void OnTriggerStay(Collider other) {
+	protected virtual void OnTriggerStay(Collider other) {
 		if (this.isBumpActive && !this.isOnBump && other.CompareTag("Player")) {
 			this.BumpPlayerToPosition(other.gameObject);
 		}
@@ -42,7 +40,7 @@ public class Bumper : MonoBehaviour {
 	}
 
 	// Bump blast projectile
-	void BumpBlastProjectileToPosition(GameObject projectile) {
+	protected void BumpBlastProjectileToPosition(GameObject projectile) {
 		BlastProjectile blastProjectile = projectile.GetComponent<BlastProjectile>();
 
 		Vector3 dest = this.destination.position;
@@ -62,17 +60,17 @@ public class Bumper : MonoBehaviour {
 		));
 	}
 	
-	void OnStartBumpBlast(BlastProjectile blastProjectile) {
+	protected void OnStartBumpBlast(BlastProjectile blastProjectile) {
 
 	}
 
-	void OnEndBumpBlast(BlastProjectile blastProjectile) {
+	protected void OnEndBumpBlast(BlastProjectile blastProjectile) {
 		blastProjectile.DestroyProjectile();
 	}
 	//
 
 	// Bump Player
-	void BumpPlayerToPosition(GameObject player) {
+	protected void BumpPlayerToPosition(GameObject player) {
 		FpsWalkerController charController = player.GetComponent<FpsWalkerController>();
 		Vector3 dest = this.destination.position;
 
@@ -92,17 +90,17 @@ public class Bumper : MonoBehaviour {
 		StartCoroutine(TweakOnBump());
 	}
 
-	IEnumerator TweakOnBump() {
+	protected IEnumerator TweakOnBump() {
 		yield return new WaitForSeconds(0.5f);
 		this.isOnBump = false;
 	}
 
-	void OnStartBump(FpsWalkerController charController) {
+	protected void OnStartBump(FpsWalkerController charController) {
 		charController.playerControl = false;
 		this.isOnBump = true;
 	}
 
-	void OnEndBump(FpsWalkerController charController) {
+	protected void OnEndBump(FpsWalkerController charController) {
 		charController.playerControl = true;
 		if (charController.CanDoubleJump)
 			charController.doubleJumpActive = true;
@@ -111,26 +109,16 @@ public class Bumper : MonoBehaviour {
 	// Bump
 
 	// Switch
-	public void Switch() {
-		if (this.isOnTimer || this.switchAnimator.IsInTransition(0))
-			return;
+	public virtual void Switch() {
 
-		this.isBumpActive = !this.isBumpActive;
-		this.isOnBump = true; // tweak delay after anim
-
-		this.SetSwitchValues();
 	}
 
-	void SetSwitchValues() {
-		if (this.isBumpActive) {
-			this.switchAnimator.SetBool("IsSwitchOn", true);
-		} else {
-			this.switchAnimator.SetBool("IsSwitchOn", false);
-		}
-		StartCoroutine(DelayAfterAnim());
+
+	protected virtual void SetSwitchValues() {
+		StartCoroutine(SetActivation());
 	}
 
-	IEnumerator DelayAfterAnim() {
+	protected IEnumerator SetActivation() {
 		yield return new WaitForSeconds(0.25f);
 		this.isOnBump = false;
 

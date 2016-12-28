@@ -15,6 +15,9 @@ public class Loader : MonoBehaviour {
 	[Space(10)]
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
+	[SerializeField] BumperLinkedLoader[] linkedBumper = new BumperLinkedLoader[0];
+	[SerializeField] LinkedParticlePoolerSettings[] linkedPoolerSettings = new LinkedParticlePoolerSettings[0];
+	[SerializeField] PoolerRing[] linkedPoolerRing = new PoolerRing[0];
 
 	[Space(10)]
 	public bool isMovePausable = false;
@@ -22,6 +25,7 @@ public class Loader : MonoBehaviour {
 
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
+	ScaleWithTimer animationTimer;
 	bool isActive;
     float timeUntilSwitchState;
 	bool isLockedByLinkedElements = true;
@@ -30,11 +34,19 @@ public class Loader : MonoBehaviour {
 	void Start() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
+		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
 
         this.timeUntilSwitchState = Time.time;
 
         this.isActive = this.isActiveAtStart;
         this.SetState(true);
+		this.InitializePoolerSettings();
+	}
+
+	void InitializePoolerSettings() {
+		foreach(LinkedParticlePoolerSettings pooler in this.linkedPoolerSettings) {
+			pooler.Awake();
+		}
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -49,11 +61,21 @@ public class Loader : MonoBehaviour {
 	}
 
     void Update() {
+		if (this.isActive) {
+			if (this.timeUntilSwitchState > Time.time) {
+				this.animationTimer.UpdateScale(this.timeUntilSwitchState - Time.time, this.timer);
+			} else {
+				this.animationTimer.UpdateScale(1, 1);
+			}
+		}
+
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
+			this.SetLinkedBumper(false);
 
 			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
 				if (this.isTimerFlipFlopLinkedElements)
 					this.isLinkedElementFlipFlop = true;
+
 				this.SwitchState();
 			}
         }
@@ -65,8 +87,10 @@ public class Loader : MonoBehaviour {
 
         this.isActive = !this.isActive;
         this.SetState(false);
-        if (this.hasTimer)
+        if (this.hasTimer) {
             this.timeUntilSwitchState = Time.time + this.timer;
+			//this.animationTimer.isOnTimer = true;
+		}
     }
 
     void SetState(bool isInit) {
@@ -78,6 +102,10 @@ public class Loader : MonoBehaviour {
             this.meshRenderer.material = this.inactiveMaterial;
         }
 
+		this.SetLinkedBumper(this.isActive);
+		this.SetLinkedPooler(this.isActive);
+		this.SetLinkedPoolerRing(this.isActive);
+
 		if (!isInit)
 			this.SetLinkedPathFollowedPlateform();
 		this.SetLinkedAnimPlatform();
@@ -87,6 +115,7 @@ public class Loader : MonoBehaviour {
 	void SetLinkedAnimPlatform() {
 		foreach (AnimatedPlateform element in this.linkedAnimatedPlateform) {
 			element.SwitchState();
+			// Ici : gérer le non Flip flop
 		}
 	}
 	//
@@ -118,4 +147,24 @@ public class Loader : MonoBehaviour {
 		return isAllFinished;
 	}
 	//
+
+	// Linked Bumper
+	void SetLinkedBumper(bool activation) {
+		for (int i = 0; i < this.linkedBumper.Length; i++) {
+			this.linkedBumper[i].SwitchByLoader(activation);
+		}
+	}
+
+	// Linked PoolerRing
+	void SetLinkedPoolerRing(bool activation) {
+		for (int i = 0; i < this.linkedPoolerRing.Length; i++) {
+			this.linkedPoolerRing[i].SetPoolersActivation(activation);
+		}
+	}
+
+	void SetLinkedPooler(bool activation) {
+		for (int i = 0; i < this.linkedPoolerSettings.Length; i++) {
+			this.linkedPoolerSettings[i].Load(activation);
+		}
+	}
 }
