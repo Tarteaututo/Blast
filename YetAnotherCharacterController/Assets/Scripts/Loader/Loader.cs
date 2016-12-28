@@ -10,14 +10,22 @@ public class Loader : MonoBehaviour {
     public bool isActiveAtStart;
 	public bool hasTimer = false;
 	[Range(0, 20f)]  public float timer = 3f;
+	public bool isTimerFlipFlopLinkedElements;
 
 	[Space(10)]
 	[SerializeField] AnimatedPlateform[] linkedAnimatedPlateform = new AnimatedPlateform[0];
+	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
+
+	[Space(10)]
+	public bool isMovePausable = false;
+	public bool isLoaderHasToBeLockedByLinkedElements;
 
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
 	bool isActive;
     float timeUntilSwitchState;
+	bool isLockedByLinkedElements = true;
+	bool isLinkedElementFlipFlop = false;
 
 	void Start() {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
@@ -26,21 +34,28 @@ public class Loader : MonoBehaviour {
         this.timeUntilSwitchState = Time.time;
 
         this.isActive = this.isActiveAtStart;
-        this.SetState();
+        this.SetState(true);
 	}
 
 	void OnTriggerEnter(Collider other) {
-        if (this.hasTimer && this.isActive != this.isActiveAtStart)
+        if (!this.isMovePausable && this.hasTimer && this.isActive != this.isActiveAtStart)
             return;
 
 		if (other.CompareTag("Blast")) {
+			if (this.isTimerFlipFlopLinkedElements)
+				this.isLinkedElementFlipFlop = false;
 			this.SwitchState();
 		}
 	}
 
     void Update() {
         if (this.hasTimer && this.isActiveAtStart != this.isActive && Time.time > this.timeUntilSwitchState) {
-            this.SwitchState();
+
+			if (!this.isLoaderHasToBeLockedByLinkedElements || this.IsLinkedPathFollowedPlateformFinished()) {
+				if (this.isTimerFlipFlopLinkedElements)
+					this.isLinkedElementFlipFlop = true;
+				this.SwitchState();
+			}
         }
     }
 
@@ -49,32 +64,58 @@ public class Loader : MonoBehaviour {
             return;
 
         this.isActive = !this.isActive;
-        this.SetState();
+        this.SetState(false);
         if (this.hasTimer)
             this.timeUntilSwitchState = Time.time + this.timer;
     }
 
-    void SetState() {
+    void SetState(bool isInit) {
         this.blastAnimator.SetBool("IsLoaded", this.isActive);
 
         if (this.isActive) {
             this.meshRenderer.material = this.activeMaterial;
-        } else {
+		} else {
             this.meshRenderer.material = this.inactiveMaterial;
         }
 
+		if (!isInit)
+			this.SetLinkedPathFollowedPlateform();
 		this.SetLinkedAnimPlatform();
     }
 
 	// Linked Animated Plateform
 	void SetLinkedAnimPlatform() {
-		Debug.Log(this.linkedAnimatedPlateform.Length);
-
 		foreach (AnimatedPlateform element in this.linkedAnimatedPlateform) {
 			element.SwitchState();
 		}
 	}
+	//
 
-	// Linked Animated Plateform
+	// Linked Path Followed Plateform
+	void SetLinkedPathFollowedPlateform() {
+		foreach (PathFollowedPlateform element in this.linkedPathFollowedPlateform) {
+			
+		if (this.isTimerFlipFlopLinkedElements && this.isLinkedElementFlipFlop)
+				element.MoveFlipFlop();
+			else
+				element.MoveSwitch(this.isActive);
 
+			this.isLockedByLinkedElements = false;
+		}
+	}
+
+	bool IsLinkedPathFollowedPlateformFinished() {
+		if (this.isLockedByLinkedElements)
+			return true;
+
+		bool isAllFinished = true;
+		foreach (PathFollowedPlateform element in this.linkedPathFollowedPlateform) {
+			if (element.isMoving) {
+				isAllFinished = false;
+			}
+		}
+		this.isLockedByLinkedElements = isAllFinished;
+		return isAllFinished;
+	}
+	//
 }
