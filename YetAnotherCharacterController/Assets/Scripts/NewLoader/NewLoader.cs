@@ -18,7 +18,7 @@ public class NewLoader: MonoBehaviour {
 	ScaleWithTimer animationTimer;
 	private bool isActive;
 	float timeUntilSwitchState;
-	private bool isOnTimer = false;
+	[HideInInspector] public bool isOnTimer = false;
 
 	public delegate void LinkedElement(bool isActive);
 	public LinkedElement linkedElements;
@@ -29,7 +29,22 @@ public class NewLoader: MonoBehaviour {
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
 
 		this.isActive = this.isActiveAtStart;
-		this.SetState();
+
+		this.blastAnimator.SetBool("IsLoaded", this.isActive);
+
+		if (this.isActive) {
+			this.meshRenderer.material = this.activeMaterial;
+		} else {
+			this.meshRenderer.material = this.inactiveMaterial;
+		}
+		
+		if (this.linkedElements != null) {
+			this.linkedElements(this.isActive);
+		} else {
+		}
+	}
+
+	void Start() {
 
 	}
 
@@ -45,10 +60,7 @@ public class NewLoader: MonoBehaviour {
 				if (this.timeUntilSwitchState > Time.time) {
 					this.animationTimer.UpdateScale(this.timeUntilSwitchState - Time.time, this.timer);
 				} else {
-					this.isOnTimer = false;
-					this.animationTimer.UpdateScale(1, 1);
-					this.isActive = !this.isActive;
-					SetState();
+		
 				}
 			}
 		}
@@ -69,6 +81,10 @@ public class NewLoader: MonoBehaviour {
 			this.isOnTimer = true;
 
 			yield return new WaitForSeconds(this.timer);
+			this.animationTimer.UpdateScale(1, 1);
+			this.isActive = !this.isActive;
+			SetState();
+			this.isOnTimer = false;
 		}
 	}
 	
@@ -80,7 +96,11 @@ public class NewLoader: MonoBehaviour {
 		} else {
 			this.meshRenderer.material = this.inactiveMaterial;
 		}
-		
-			this.linkedElements(this.isActive);
+		if (this.linkedElements != null) {
+			if (this.isActiveAtStart != this.isActive)
+				this.linkedElements(this.isActive);
+			else
+				this.linkedElements(!this.isActive);
+		}
 	}
 }
