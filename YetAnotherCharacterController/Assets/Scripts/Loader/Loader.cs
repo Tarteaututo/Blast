@@ -59,7 +59,7 @@ public class Loader : MonoBehaviour {
 		}
 
 		foreach (LinkedAnimatedPlateformSettings plateform in this.linkedAnimatedPlateform) {
-			plateform.Initialize();
+			plateform.Initialize(this.isActiveAtStart);
 		}
 
 		foreach (LinkedBumperSettings bumper in this.linkedBumperSettings) {

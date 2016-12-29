@@ -2,7 +2,8 @@
 using System.Collections;
 
 public abstract class AnimatedPlateform : MonoBehaviour {
-	
+	public bool isActiveAtStart;
+
 	[System.Serializable]
 	public class Settings {
 		public bool hasTimer;
@@ -16,18 +17,21 @@ public abstract class AnimatedPlateform : MonoBehaviour {
 	protected virtual void Awake() {
 		this.animator = this.GetComponentInChildren<Animator>();
 
+	}
+
+	protected virtual void Start() {
+
 		if (this.settings.hasTimer) {
 			StartCoroutine(OnTimer());
 		}
 	}
+
 	IEnumerator OnTimer() {
 		yield return new WaitForSeconds(this.settings.timer);
 
 		this.SwitchState();
 		yield return OnTimer();
 	}
-
-	protected virtual void Start() { }
 
 	public abstract void SwitchState();
 
