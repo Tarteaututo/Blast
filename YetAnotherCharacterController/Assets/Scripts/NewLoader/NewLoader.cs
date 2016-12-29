@@ -49,42 +49,67 @@ public class NewLoader: MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
+		if (this.hasTimer && this.isActive != this.isActiveAtStart)
+			return;
+	
+
 		if (other.CompareTag("Blast") && !this.isOnTimer) {
-				StartCoroutine(this.OnSwitchState(false));
+			StartCoroutine(this.OnSwitchState(false));
 		}
 	}
+
+	/*
+
+	void OnTriggerEnter(Collider other) {
+		if (other.CompareTag("Blast")) {
+			if (this.isToggable || !this.isToggable && !this.isOnTimer) {
+				StartCoroutine(this.OnSwitchState(false));
+			}
+		}
+	}
+	*/
 
 	void Update() {
 		if (this.isActive != this.isActiveAtStart) {
 			if (this.hasTimer) {
 				if (this.timeUntilSwitchState > Time.time) {
+					if (!this.isOnTimer)
+						this.isOnTimer = true; // A revoir mais plus tard ...
 					this.animationTimer.UpdateScale(this.timeUntilSwitchState - Time.time, this.timer);
 				} else {
-		
+					this.isOnTimer = false;
 				}
 			}
 		}
 	}
 
 	IEnumerator OnSwitchState(bool isInit) {
-
-		if (!this.blastAnimator.IsInTransition(0)) {
+		if (this.hasTimer && this.isOnTimer) {
+		
+		}
+		else if (!this.blastAnimator.IsInTransition(0)) {
 			this.isActive = !this.isActive;
 			this.SetState();
 
+			if (this.hasTimer)
+				this.isOnTimer = true;
+
 			if (this.hasTimer && !isInit) {
 				this.timeUntilSwitchState = Time.time + this.timer;
+
+				yield return new WaitForSeconds(this.timer);
+
+				this.animationTimer.UpdateScale(1, 1);
+				this.isActive = !this.isActive;
+
+				SetState();
 			}
 		}
 
 		if (this.hasTimer && !isInit) {
-			this.isOnTimer = true;
 
-			yield return new WaitForSeconds(this.timer);
-			this.animationTimer.UpdateScale(1, 1);
-			this.isActive = !this.isActive;
-			SetState();
-			this.isOnTimer = false;
+			
+
 		}
 	}
 	
