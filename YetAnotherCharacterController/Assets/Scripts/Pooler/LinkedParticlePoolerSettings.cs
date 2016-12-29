@@ -22,21 +22,28 @@ public class LinkedParticlePoolerSettings {
 	public Settings onStartSettings = new Settings();
 	public Settings onLoadSettings = new Settings();
 
+	private bool isActive = false;
+
 	public void Awake() {
 		this.onStartSettings.Initialize(linkedPooler);
+		this.isActive = this.onStartSettings.isEnabled;
+		this.Load(false);
 	}
 
 	public void Load(bool activation) {
-		if (activation) {
+		if (this.isActive) {
 			this.linkedPooler.SetPoolerAble(this.onLoadSettings.isEnabled);
 			this.linkedPooler.activeRandom = this.onLoadSettings.activeRandom;
 			if (this.onLoadSettings.material)
 				this.linkedPooler.objectMaterial = this.onLoadSettings.material;
+
 		} else {
 			this.linkedPooler.SetPoolerAble(this.onStartSettings.isEnabled);
 			this.linkedPooler.activeRandom = this.onStartSettings.activeRandom;
 			if (this.onStartSettings.material)
 				this.linkedPooler.objectMaterial = this.onStartSettings.material;
+
 		}
+		this.isActive = !this.isActive;
 	}
 }

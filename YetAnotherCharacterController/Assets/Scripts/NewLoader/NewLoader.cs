@@ -121,6 +121,7 @@ public class NewLoader: MonoBehaviour {
 		} else {
 			this.meshRenderer.material = this.inactiveMaterial;
 		}
+
 		if (this.linkedElements != null) {
 			if (this.isActiveAtStart != this.isActive)
 				this.linkedElements(this.isActive);
