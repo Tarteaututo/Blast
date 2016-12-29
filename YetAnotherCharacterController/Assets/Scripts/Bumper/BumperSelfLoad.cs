@@ -8,7 +8,7 @@ public class BumperSelfLoad : Bumper {
 		this.particleSystem = this.GetComponentInChildren<ParticleSystem>();
 		this.overlayRenderer = this.GetComponentInChildren<MeshRenderer>();
 
-		this.isBumpActive = this.isBumpActiveAtStart;
+		this.isBumpActive = this.isActiveAtStart;//this.isBumpActiveAtStart;
 
 		this.switchAnimator = this.GetComponentInChildren<Animator>();
 		this.SetSwitchValues();

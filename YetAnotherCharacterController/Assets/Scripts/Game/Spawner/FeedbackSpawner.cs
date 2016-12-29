@@ -13,7 +13,7 @@ public class FeedbackSpawner : MonoBehaviour {
 	ParticleSystem activeParticles;
 	ParticleSystem inactiveParticles;
 
-	void Start() {
+	void Awake() {
 		this.feedbackRenderer = this.GetComponent<MeshRenderer>();
 
 		foreach (ParticleSystem child in this.GetComponentsInChildren<ParticleSystem>()) {
@@ -29,7 +29,9 @@ public class FeedbackSpawner : MonoBehaviour {
 
 	public void SetFeedbackColors(bool isActive, bool isDiscovered) {
 		if (isActive) {
-			this.feedbackRenderer.material = feedbackActiveMaterial;
+			if (this.feedbackActiveMaterial) {
+				this.feedbackRenderer.material = feedbackActiveMaterial;
+			}
 			this.activeParticles.Play();
 			this.inactiveParticles.Stop();
 			this.undiscoveredParticles.Stop();

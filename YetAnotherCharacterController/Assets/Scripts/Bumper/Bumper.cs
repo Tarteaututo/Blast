@@ -2,17 +2,23 @@
 using System.Collections;
 
 public class Bumper : MonoBehaviour {
+
+
 	[SerializeField] protected Transform destination;
 	[SerializeField] protected Material activeMaterial;
 	[SerializeField] protected Material inactiveMaterial;
 
-	public bool isBumpActiveAtStart = true;
+	public bool isActiveAtStart = true;
 	public float speed = 15f;
 	public iTween.EaseType easeType = iTween.EaseType.linear;
-	
-	[Space(10)]
+
 	public bool hasTimer = false;
-	[Range(0, 20f)] public float timer = 1;
+	[Range(0, 20f)]
+	public float timer = 1;
+
+	[HideInInspector]
+	public bool isLinked = false;
+
 
 	protected MeshRenderer overlayRenderer;
 	[HideInInspector] protected ParticleSystem particleSystem;
@@ -20,12 +26,16 @@ public class Bumper : MonoBehaviour {
 	protected bool isOnTimer = false;
 	protected bool isBumpActive;
 
+	protected virtual void Awake() {
+	
+
+	}
+
 	protected virtual void Start() {
 		this.particleSystem = this.GetComponentInChildren<ParticleSystem>();
 		this.overlayRenderer = this.GetComponentInChildren<MeshRenderer>();
 
-		this.isBumpActive = this.isBumpActiveAtStart;
-
+		this.isBumpActive = this.isActiveAtStart;
 		this.SetSwitchValues();
 	}
 
@@ -131,7 +141,7 @@ public class Bumper : MonoBehaviour {
 			this.overlayRenderer.material = this.inactiveMaterial;
 		}
 
-		if (this.hasTimer && this.isBumpActive != this.isBumpActiveAtStart)
+		if (this.hasTimer && this.isBumpActive != this.isActiveAtStart/*this.isBumpActiveAtStart*/)
 			StartCoroutine(this.OnTimer());
 	}
 	// Switch

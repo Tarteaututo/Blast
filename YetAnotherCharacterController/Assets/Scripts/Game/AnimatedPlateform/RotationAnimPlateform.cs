@@ -3,24 +3,28 @@ using System.Collections;
 using System;
 
 public class RotationAnimPlateform : AnimatedPlateform {
-	public bool isHorizontalAtStart;
 
-	bool isHorizontal;
+	bool isActive;
+
+	protected override void Awake() {
+		base.Awake();
+	}
 
 	protected override void Start() {
 		base.Start();
-		// Tweak : le Loader switch automatiquement la valeur au start, ici on mets l'inverse dans le start pour avoir la bonne.
-		this.isHorizontal = this.isHorizontalAtStart;
+
+		this.isActive = this.isActiveAtStart;
 
 		this.SetState();
 	}
 
 	public override void SwitchState() {
-		this.isHorizontal = !this.isHorizontal;
+		this.isActive = !this.isActive;
 		this.SetState();
 	}
 
 	private void SetState() {
-		this.animator.SetBool("IsHorizontal", this.isHorizontal);
+		if (this.animator)
+			this.animator.SetBool("IsHorizontal", this.isActive);
 	}
 }

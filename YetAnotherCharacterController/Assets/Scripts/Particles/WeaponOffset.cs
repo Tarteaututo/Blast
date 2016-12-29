@@ -6,13 +6,11 @@ public class WeaponOffset : MonoBehaviour {
 
 	public GunAnimation gunAnimation;
 
-	Camera playerCam;
 	private float effectTime;
 	List<GameObject> childParticleSystem = new List<GameObject>();
 	private bool isOnShooting = false;
 
 	void Start() {
-		this.playerCam = this.GetComponentInParent<Camera>();
 		this.effectTime = this.GetComponentInParent<TriggerGun>().fireRate;
 		foreach (Transform element in this.transform) {
 			childParticleSystem.Add(element.gameObject);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PathFollowedPlateform : MonoBehaviour {
-	public bool isMovingAtStart = false;
+	public bool isActiveAtStart = false;
 	public float speed = 10f;
 	[Range(0f, 20f)] public float delay = 0;
 
@@ -16,6 +16,7 @@ public class PathFollowedPlateform : MonoBehaviour {
 
 	[HideInInspector] public bool isMoving;
 	[HideInInspector] public bool isPaused = false;
+	[HideInInspector] public bool isLinked = false;
 
 
 	void Awake() {
@@ -34,7 +35,7 @@ public class PathFollowedPlateform : MonoBehaviour {
 	}
 
 	void Start() {
-		this.isMoving = this.isMovingAtStart;
+		this.isMoving = this.isActiveAtStart;
 		if (this.isMoving)
 			StartCoroutine(this.Move());
 	}
@@ -95,26 +96,4 @@ public class PathFollowedPlateform : MonoBehaviour {
 		this.isPaused = false;
 	}
 
-	/*
-	TODO : 
-	comportement voulu
-		Si loopType == none
-			bloquer l'animation du loader, empecher la réactivation.
-		si '' == pingpong ou loop
-			bloquer l'animation du loader, mais permettre la réactivation.
-			Mettre en pause le mouvement à la désactivation et le réactiver
-			si réactivé.
-	
-	void OnBeginMove() {
-		if (this.loopType == iTween.LoopType.none)	
-			this.isMoving = true;
-	}
-
-	void OnEndMove() {
-		if (this.loopType == iTween.LoopType.none) {
-			iTween.Stop(this.plateform);
-			this.isMoving = false;
-		}
-	}
-	*/
 }
