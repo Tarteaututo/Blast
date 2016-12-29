@@ -2,6 +2,6 @@ sceneSetups:
 - path: Assets/Resources/Scenes/Game.unity
   isLoaded: 1
   isActive: 1
-- path: Assets/Resources/Scenes/LevelTest - 3.unity
+- path: Assets/Resources/Scenes/LevelTest - 2.unity
   isLoaded: 1
   isActive: 0

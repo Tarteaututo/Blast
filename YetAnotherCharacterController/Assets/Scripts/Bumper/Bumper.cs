@@ -27,6 +27,7 @@ public class Bumper : MonoBehaviour {
 	protected bool isBumpActive;
 
 	protected virtual void Awake() {
+	
 
 	}
 
@@ -34,8 +35,7 @@ public class Bumper : MonoBehaviour {
 		this.particleSystem = this.GetComponentInChildren<ParticleSystem>();
 		this.overlayRenderer = this.GetComponentInChildren<MeshRenderer>();
 
-		this.isBumpActive = this.isActiveAtStart;// this.isBumpActiveAtStart;
-
+		this.isBumpActive = this.isActiveAtStart;
 		this.SetSwitchValues();
 	}
 

@@ -15,7 +15,7 @@ public class Loader : MonoBehaviour {
 	[Space(10)]
 	[SerializeField] LinkedAnimatedPlateformSettings[] linkedAnimatedPlateform = new LinkedAnimatedPlateformSettings[0];
 	[SerializeField] PathFollowedPlateform[] linkedPathFollowedPlateform = new PathFollowedPlateform[0];
-	[SerializeField] BumperLinkedLoader[] linkedBumper = new BumperLinkedLoader[0];
+	[SerializeField] BumperLinked[] linkedBumper = new BumperLinked[0];
 	[SerializeField] LinkedBumperSettings[] linkedBumperSettings = new LinkedBumperSettings[0];
 	[SerializeField] LinkedParticlePoolerSettings[] linkedPoolerSettings = new LinkedParticlePoolerSettings[0];
 	[SerializeField] PoolerRing[] linkedPoolerRing = new PoolerRing[0];
@@ -59,7 +59,7 @@ public class Loader : MonoBehaviour {
 		}
 
 		foreach (LinkedAnimatedPlateformSettings plateform in this.linkedAnimatedPlateform) {
-			plateform.Initialize();
+			plateform.Initialize(this.isActiveAtStart);
 		}
 
 		foreach (LinkedBumperSettings bumper in this.linkedBumperSettings) {

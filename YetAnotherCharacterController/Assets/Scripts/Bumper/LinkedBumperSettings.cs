@@ -3,7 +3,7 @@ using System.Collections;
 
 [System.Serializable]
 public class LinkedBumperSettings {
-	public BumperLinkedLoader bumper;
+	public BumperLinked bumper;
 	public bool isActiveAtStart;
 
 	public bool hasTimer = false;
