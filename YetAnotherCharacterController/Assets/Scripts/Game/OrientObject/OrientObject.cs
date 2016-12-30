@@ -7,12 +7,12 @@ public class OrientObject : MonoBehaviour {
 	bool isActive;
 
 	void Start() {
-		Debug.Log("Start");
+	//	Debug.Log("Start");
 
 		this.isActive = this.isActiveAtStart;
 	}
 
 	public void SwitchState() {
-		Debug.Log("Switch State" + this.isActive);
+	//	Debug.Log("Switch State" + this.isActive);
 	}
 }

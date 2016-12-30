@@ -10,7 +10,7 @@ public class LinkedOrientObjectSettings {
 
 	public void Initialize() {
 		this.orientObject.isActiveAtStart = this.isActiveAtStart;
-		Debug.Log("Initialize");
+		//Debug.Log("Initialize");
 	}
 
 	public void SwitchState() {
