@@ -28,7 +28,6 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 
 	void Start() {
 		this.isActive = this.isActiveAtStart;
-		Debug.Log(this.isActive + "  f " + this.isLinked);
 
 		if (!this.isLinked && this.isActive) {
 

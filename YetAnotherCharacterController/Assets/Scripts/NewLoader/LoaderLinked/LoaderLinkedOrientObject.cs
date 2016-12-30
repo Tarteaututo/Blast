@@ -13,8 +13,7 @@ public class LoaderLinkedOrientObject : LoaderLinked {
 
 	protected override void SetState(bool isActive) {
 		foreach (LinkedOrientObjectSettings element in this.orientObject) {
-
-			element.SwitchState();;
+			element.SwitchState();
 		}
 	}
 }

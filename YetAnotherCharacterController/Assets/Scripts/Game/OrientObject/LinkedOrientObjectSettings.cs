@@ -6,14 +6,30 @@ public class LinkedOrientObjectSettings {
 	public OrientObject orientObject;
 	[HideInInspector] public Transform [] positionsList;
 
-	public bool isActiveAtStart = false;
+	[System.Serializable]
+	public class Settings {
+		public bool isEnabled = false;
+
+	}
+
+	public Settings startSettings = new Settings();
+	public Settings loadSettings = new Settings();
+
+	bool isStartActive = false;
 
 	public void Initialize() {
-		this.orientObject.isActiveAtStart = this.isActiveAtStart;
-		//Debug.Log("Initialize");
+		this.orientObject.SetEnabled(this.startSettings.isEnabled);
+		this.isStartActive = true;
+
 	}
 
 	public void SwitchState() {
-		this.orientObject.SwitchState();
+		this.isStartActive = !this.isStartActive;
+		if (!this.isStartActive) {
+			this.orientObject.SetEnabled(this.loadSettings.isEnabled);
+		} else {
+			this.orientObject.SetEnabled(this.startSettings.isEnabled);
+
+		}
 	}
 }

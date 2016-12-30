@@ -123,10 +123,12 @@ public class NewLoader: MonoBehaviour {
 		}
 
 		if (this.linkedElements != null) {
-			if (this.isActiveAtStart != this.isActive)
+			if (this.isActiveAtStart != this.isActive) {
 				this.linkedElements(this.isActive);
-			else
+			}
+			else {
 				this.linkedElements(!this.isActive);
+			}
 		}
 	}
 }
