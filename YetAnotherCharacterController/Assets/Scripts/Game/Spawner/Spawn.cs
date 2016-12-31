@@ -31,8 +31,8 @@ public class Spawn : MonoBehaviour {
 			}
 			BlastGun playerGun = other.GetComponent<BlastGun>();
 			if (playerGun.Ammo < reloadAmmo) {
-				reloadAmmo -= playerGun.Ammo;
-				playerGun.Ammo += reloadAmmo;
+				int reload = reloadAmmo - playerGun.Ammo;
+				playerGun.Ammo += reload;
 			}
 
 			this.ReloadLinkedCharger();
