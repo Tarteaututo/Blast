@@ -20,23 +20,36 @@ public class Bumper : MonoBehaviour {
 	public bool isLinked = false;
 
 
+	protected ScaleWithTimer animationTimer;
 	protected MeshRenderer overlayRenderer;
 	[HideInInspector] protected ParticleSystem particleSystem;
 	protected bool isOnBump = false;
 	protected bool isOnTimer = false;
 	protected bool isBumpActive;
+	float timeUntilNextTimer = -1;
 
 	protected virtual void Awake() {
-	
+		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
 
 	}
 
-	protected virtual void Start() {
+	protected virtual void Start() { // not in selfload
 		this.particleSystem = this.GetComponentInChildren<ParticleSystem>();
 		this.overlayRenderer = this.GetComponentInChildren<MeshRenderer>();
 
 		this.isBumpActive = this.isActiveAtStart;
 		this.SetSwitchValues();
+	}
+
+	protected virtual void Update() {
+		if (this.hasTimer && this.timeUntilNextTimer != -1) {
+			if (this.timeUntilNextTimer > Time.time) {
+				this.animationTimer.UpdateScale(this.timeUntilNextTimer - Time.time, this.timer);
+			} else {
+				this.animationTimer.UpdateScale(1, 1);
+				this.timeUntilNextTimer = -1;
+			}
+		}
 	}
 
 	protected virtual void OnTriggerStay(Collider other) {
@@ -150,6 +163,7 @@ public class Bumper : MonoBehaviour {
 	IEnumerator OnTimer() {
 		this.isOnTimer = true;
 
+		this.timeUntilNextTimer = Time.time + this.timer;
 		yield return new WaitForSeconds(this.timer);
 		this.isOnTimer = false;
 

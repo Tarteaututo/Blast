@@ -28,6 +28,8 @@ public class NewLoader: MonoBehaviour {
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
 
+		if (!this.hasTimer)
+			this.animationTimer.gameObject.SetActive(false);
 		this.isActive = this.isActiveAtStart;
 
 		this.blastAnimator.SetBool("IsLoaded", this.isActive);
