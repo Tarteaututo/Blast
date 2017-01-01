@@ -7,7 +7,7 @@ public class BumperLinked : Bumper {
 	protected override void Start() {
 		base.Start();
 
-		if (this.hasTimer) {
+		if (this.hasTimer && !this.isLinked) {
 			StartCoroutine(OnSelfTimer());
 		}
 	}
@@ -15,12 +15,12 @@ public class BumperLinked : Bumper {
 	IEnumerator OnSelfTimer() {
 		yield return new WaitForSeconds(this.timer);
 
-		this.SwitchByLoader(!this.isBumpActive);
+		this.SelfSwitch(!this.isBumpActive);
 
 		yield return OnSelfTimer();
 	}
 
-	public void SwitchByLoader(bool isActivate) {
+	public void SelfSwitch(bool isActivate) {
 		
 		if (!this.isActiveAtStart) {
 			isActivate = !isActivate;
@@ -34,9 +34,29 @@ public class BumperLinked : Bumper {
 	}
 
 	public void NewSwitchByLoader() {
+		if (this.isOnBump)
+			return;
 		this.isBumpActive = !this.isBumpActive;
 
 		this.isOnBump = true;
 		StartCoroutine(SetActivation());
+		
+		if (this.hasTimer)
+			StartCoroutine(HandleLocalTimer());
+	}
+
+	IEnumerator HandleLocalTimer() {
+		yield return new WaitForSeconds(this.timer);
+		this.AfterTimerSwitchByLoader();
+	}
+
+	public void AfterTimerSwitchByLoader() {
+		if (this.isOnBump)
+			return;
+		this.isBumpActive = !this.isBumpActive;
+
+		this.isOnBump = true;
+		StartCoroutine(SetActivation());
+
 	}
 }
