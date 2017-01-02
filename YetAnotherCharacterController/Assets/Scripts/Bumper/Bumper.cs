@@ -53,7 +53,7 @@ public class Bumper : MonoBehaviour {
 	}
 
 	protected virtual void OnTriggerStay(Collider other) {
-		if (this.isBumpActive && !this.isOnBump && other.CompareTag("Player")) {
+		if (this.isBumpActive && /*!this.isOnBump && */ other.CompareTag("Player")) {
 			this.BumpPlayerToPosition(other.gameObject);
 		}
 
