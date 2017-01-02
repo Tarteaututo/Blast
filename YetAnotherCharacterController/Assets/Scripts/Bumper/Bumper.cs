@@ -115,7 +115,7 @@ public class Bumper : MonoBehaviour {
 
 	protected IEnumerator TweakOnBump() {
 		yield return new WaitForSeconds(0.5f);
-		this.isOnBump = false;
+		//this.isOnBump = false;
 	}
 
 	protected void OnStartBump(FpsWalkerController charController) {

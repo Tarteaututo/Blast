@@ -34,8 +34,8 @@ public class BumperLinked : Bumper {
 	}
 
 	public void NewSwitchByLoader() {
-		if (this.isOnBump)
-			return;
+		//if (this.isOnBump)
+			//return;
 		this.isBumpActive = !this.isBumpActive;
 
 		this.isOnBump = true;
@@ -51,8 +51,8 @@ public class BumperLinked : Bumper {
 	}
 
 	public void AfterTimerSwitchByLoader() {
-		if (this.isOnBump)
-			return;
+		//if (this.isOnBump)
+//return;
 		this.isBumpActive = !this.isBumpActive;
 
 		this.isOnBump = true;
