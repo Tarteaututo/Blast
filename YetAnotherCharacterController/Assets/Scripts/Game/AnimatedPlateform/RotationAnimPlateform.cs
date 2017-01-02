@@ -10,8 +10,8 @@ public class RotationAnimPlateform : AnimatedPlateform {
 		base.Awake();
 	}
 
-	protected override void Start() {
-		base.Start();
+	protected override void OnEnable() {
+		base.OnEnable();
 
 		this.isActive = this.isActiveAtStart;
 

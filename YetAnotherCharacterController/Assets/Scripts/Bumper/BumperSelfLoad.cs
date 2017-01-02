@@ -11,6 +11,10 @@ public class BumperSelfLoad : Bumper {
 		this.isBumpActive = this.isActiveAtStart;//this.isBumpActiveAtStart;
 
 		this.switchAnimator = this.GetComponentInChildren<Animator>();
+
+		if (!this.hasTimer)
+			this.animationTimer.gameObject.SetActive(false);
+
 		this.SetSwitchValues();
 	}
 

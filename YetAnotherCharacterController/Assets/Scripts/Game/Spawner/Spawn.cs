@@ -29,7 +29,12 @@ public class Spawn : MonoBehaviour {
 					this.isDiscovered = true;
 				}
 			}
-			other.GetComponent<BlastGun>().Ammo = reloadAmmo;
+			BlastGun playerGun = other.GetComponent<BlastGun>();
+			if (playerGun.Ammo < reloadAmmo) {
+				int reload = reloadAmmo - playerGun.Ammo;
+				playerGun.Ammo += reload;
+			}
+
 			this.ReloadLinkedCharger();
 			this.feedbackSpawner.SetFeedbackColors(this.isActive, this.isDiscovered);
 		}

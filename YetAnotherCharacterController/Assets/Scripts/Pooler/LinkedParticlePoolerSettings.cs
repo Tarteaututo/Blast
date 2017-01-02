@@ -27,10 +27,12 @@ public class LinkedParticlePoolerSettings {
 	public void Awake() {
 		this.onStartSettings.Initialize(linkedPooler);
 		this.isActive = this.onStartSettings.isEnabled;
-		this.Load(false);
+		this.Load(!this.isActive);
 	}
 
 	public void Load(bool activation) {
+		this.isActive = !this.isActive;
+
 		if (this.isActive) {
 			this.linkedPooler.SetPoolerAble(this.onLoadSettings.isEnabled);
 			this.linkedPooler.activeRandom = this.onLoadSettings.activeRandom;
@@ -44,6 +46,5 @@ public class LinkedParticlePoolerSettings {
 				this.linkedPooler.objectMaterial = this.onStartSettings.material;
 
 		}
-		this.isActive = !this.isActive;
 	}
 }

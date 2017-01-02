@@ -16,7 +16,8 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 
 	[HideInInspector] public bool isActive;
 	[HideInInspector] public bool isLinked = false;
-	[HideInInspector] public bool isActiveAtStart = true;
+	public bool isPathSequentiel = false;
+	public bool isActiveAtStart = true;
 	bool isFirstTime = true;
 
 	int currentPathindex = 0;
@@ -29,7 +30,6 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 		this.isActive = this.isActiveAtStart;
 
 		if (!this.isLinked && this.isActive) {
-		//	Debug.Log(this.isActive + "  f " + this.isLinked);
 
 			this.Move(true);
 		}
@@ -73,6 +73,7 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 			//"oncompleteparams", blastProjectile,
 			"islocal", false,
 			"easetype", easeType
+			//"orienttopath", true
 		));
 	}
 
@@ -87,7 +88,7 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 
 		//this.isPaused = false;
 
-		if (!this.isLinked)
+		if (!this.isLinked && this.isPathSequentiel)
 			this.Move(true);
 	}
 

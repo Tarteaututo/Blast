@@ -19,7 +19,7 @@ public abstract class AnimatedPlateform : MonoBehaviour {
 
 	}
 
-	protected virtual void Start() {
+	protected virtual void OnEnable() {
 
 		if (this.settings.hasTimer) {
 			StartCoroutine(OnTimer());

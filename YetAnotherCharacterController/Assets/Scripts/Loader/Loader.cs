@@ -169,11 +169,11 @@ public class Loader : MonoBehaviour {
 	// Linked Bumper
 	void SetLinkedBumper(bool activation) {
 		for (int i = 0; i < this.linkedBumper.Length; i++) {
-			this.linkedBumper[i].SwitchByLoader(activation);
+			this.linkedBumper[i].SelfSwitch(activation);
 		}
 
 		for (int i = 0; i < this.linkedBumperSettings.Length; i++) {
-			this.linkedBumperSettings[i].bumper.SwitchByLoader(activation);
+			this.linkedBumperSettings[i].bumper.SelfSwitch(activation);
 		}
 	}
 
