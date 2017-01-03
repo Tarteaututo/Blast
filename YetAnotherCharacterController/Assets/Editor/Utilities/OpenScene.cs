@@ -7,7 +7,7 @@ public class OpenScene : Editor {
 	static string scene_Game = "Game";
 	static string scene_LevelTest1 = "LevelTest - 1";
 	static string scene_LevelTest2 = "LevelTest - 2";
-	static string scene_LevelTest3 = "LevelTest - 3";
+	static string scene_LevelTest3 = "Level - BumperLoader";
 
 	static string scenesFolderPath = "Assets/Resources/Scenes/";
 	static string sceneExtensiosn = ".unity";
@@ -25,6 +25,11 @@ public class OpenScene : Editor {
 
 	[MenuItem("OpenScene/LevelTest - 3", false, 12)]
 	public static void OpenLevelTest3() {
+		Open(scene_LevelTest3);
+	}
+
+	[MenuItem("OpenScene/Level - BumperLoader", false, 12)]
+	public static void OpenLevelTest4() {
 		Open(scene_LevelTest3);
 	}
 
