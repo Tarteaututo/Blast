@@ -24,16 +24,16 @@ public class LinkedParticlePoolerSettings {
 
 	private bool isActive = false;
 
+
 	public void Awake() {
 		Debug.Log("Awake");
+
 		this.onStartSettings.Initialize(linkedPooler);
 		this.isActive = this.onStartSettings.isEnabled;
 		this.Load(!this.isActive);
 	}
 
 	public void Load(bool activation) {
-
-
 		this.isActive = !this.isActive;
 
 		if (this.isActive) {
@@ -43,14 +43,13 @@ public class LinkedParticlePoolerSettings {
 				this.linkedPooler.objectMaterial = this.onLoadSettings.material;
 			Debug.Log("Load : OnLoadSettings");
 
-
 		} else {
 			this.linkedPooler.SetPoolerAble(this.onStartSettings.isEnabled);
 			this.linkedPooler.activeRandom = this.onStartSettings.activeRandom;
 			if (this.onStartSettings.material)
 				this.linkedPooler.objectMaterial = this.onStartSettings.material;
-
 			Debug.Log("Load : OnStartSettings");
+
 		}
 	}
 }

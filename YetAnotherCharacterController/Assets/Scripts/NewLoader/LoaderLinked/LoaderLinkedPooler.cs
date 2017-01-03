@@ -15,7 +15,9 @@ public class LoaderLinkedPooler : LoaderLinked {
 
 	protected override void SetState(bool isActive) {
 		foreach(LinkedParticlePoolerSettings element in this.linkedPoolerSettings) {
+
 			Debug.Log("SetState By Loader");
+
 			element.Load(isActive);
 		}
 	}

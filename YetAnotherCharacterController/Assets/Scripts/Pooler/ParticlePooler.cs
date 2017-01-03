@@ -50,7 +50,6 @@ public class ParticlePooler : MonoBehaviour {
 
 	public ActiveRandom activeRandom;
 
-
 	void Awake() {
 		Debug.Log("Pooler : Awake");
 	}

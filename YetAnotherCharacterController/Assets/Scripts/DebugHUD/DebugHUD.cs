@@ -8,7 +8,7 @@ public class DebugHUD : MonoBehaviour {
 	MouseLook mouseLook;
 	TriggerGun triggerGun;
 
-	GameManager.PlayerSettings playerSettings;
+	LevelManager.PlayerSettings playerSettings;
 
 	Color[] feedbackColors = new Color[2] { Color.red, Color.green };
 
@@ -18,11 +18,11 @@ public class DebugHUD : MonoBehaviour {
 	}
 
 	void Start() {
-		this.charController = GameManager.Instance.charController;
+		this.charController = LevelManager.Instance.charController;
 		this.mouseLook = this.charController.mouseLook;
-		this.triggerGun = GameManager.Instance.triggerGun;
+		this.triggerGun = LevelManager.Instance.triggerGun;
 
-		this.playerSettings = GameManager.Instance.playerSettings;
+		this.playerSettings = LevelManager.Instance.playerSettings;
 	}
 
 	// Update is called once per frame

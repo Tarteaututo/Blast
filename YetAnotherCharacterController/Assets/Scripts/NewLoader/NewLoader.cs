@@ -39,15 +39,14 @@ public class NewLoader: MonoBehaviour {
 		} else {
 			this.meshRenderer.material = this.inactiveMaterial;
 		}
-		
+
+	}
+
+	void OnEnable() {
 		if (this.linkedElements != null) {
 			this.linkedElements(this.isActive);
 		} else {
 		}
-	}
-
-	void Start() {
-
 	}
 
 	void OnTriggerEnter(Collider other) {

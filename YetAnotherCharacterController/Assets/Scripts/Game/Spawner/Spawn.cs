@@ -24,7 +24,7 @@ public class Spawn : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
 			if (!this.isActive) {
-				GameManager.Instance.SetLastAvailableSpawner(this);
+				LevelManager.Instance.SetLastAvailableSpawner(this);
 				if (!this.isDiscovered) {
 					this.isDiscovered = true;
 				}
