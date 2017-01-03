@@ -51,6 +51,15 @@ public class ParticlePooler : MonoBehaviour {
 	public ActiveRandom activeRandom;
 
 
+	void Awake() {
+		Debug.Log("Pooler : Awake");
+	}
+
+	void Start() {
+		Debug.Log("Pooler : Start");
+	}
+
+
 	void FixedUpdate() {
 		this.timeSinceLastSpawn += Time.deltaTime;
 		float currentCD = this.Cooldown();

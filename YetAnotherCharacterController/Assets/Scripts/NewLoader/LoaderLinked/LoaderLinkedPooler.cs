@@ -7,12 +7,15 @@ public class LoaderLinkedPooler : LoaderLinked {
 
 	protected override void InitializeLinkedsElements() {
 		foreach (LinkedParticlePoolerSettings element in this.linkedPoolerSettings) {
+			Debug.Log("SetState");
+
 			element.Awake();
 		}
 	}
 
 	protected override void SetState(bool isActive) {
 		foreach(LinkedParticlePoolerSettings element in this.linkedPoolerSettings) {
+			Debug.Log("SetState By Loader");
 			element.Load(isActive);
 		}
 	}
