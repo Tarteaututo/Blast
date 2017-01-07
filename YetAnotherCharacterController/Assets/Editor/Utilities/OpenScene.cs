@@ -9,9 +9,14 @@ public class OpenScene : Editor {
 	static string scene_LevelTest2 = "LevelTest - 2";
 	static string scene_LevelTest3 = "Level - BumperLoader"; 
 	static string scene_LevelTest4 = "Level - Progression-Orient"; 
-
+	static string scene_MenuRoom = "MenuRoom";
 	static string scenesFolderPath = "Assets/Resources/Scenes/";
 	static string sceneExtensiosn = ".unity";
+
+	[MenuItem("OpenScene/MenuRoom", false, 5)]
+	public static void OpenMainMenu3D() {
+		Open(scene_MenuRoom);
+	}
 
 	[MenuItem("OpenScene/LevelTest - 1", false, 11)]
 	public static void OpenLevelTest1() {
@@ -33,6 +38,8 @@ public class OpenScene : Editor {
 	public static void OpenLevelTest4() {
 		Open(scene_LevelTest4);
 	}
+
+
 
 
 	static void Open(string scene) {

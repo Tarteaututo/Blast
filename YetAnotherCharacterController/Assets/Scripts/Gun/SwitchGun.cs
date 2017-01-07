@@ -27,6 +27,7 @@ public class SwitchGun : MonoBehaviour {
 
 		Ray ray = new Ray(rayOrigin, this.playerCam.transform.forward);
 		if (Physics.Raycast(ray, out hit, this.weaponRange, this.layerMask)) {
+
 			Bumper bumper = hit.collider.GetComponentInParent<Bumper>();
 
 			if (bumper) {
@@ -38,6 +39,12 @@ public class SwitchGun : MonoBehaviour {
 
 			if (charger) {
 				charger.Reload(this.blastGun);
+			}
+
+
+			if (hit.transform.CompareTag("Menu3D")) {
+				SwitchButton switchButton = hit.collider.transform.GetComponent<SwitchButton>();
+				switchButton.Toggle();
 			}
 		}
 	}
