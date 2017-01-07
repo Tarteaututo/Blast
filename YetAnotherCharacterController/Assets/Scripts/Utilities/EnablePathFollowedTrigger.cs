@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class EnablePathFollowedTrigger : MonoBehaviour {
-	public NewPathFollowedPlatform target;
+	public NewPathFollowedPlatform[] target;
 
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
@@ -11,6 +11,8 @@ public class EnablePathFollowedTrigger : MonoBehaviour {
 	}
 
 	void ToggleEnable() {
-		this.target.enabled = !this.target.enabled;
+		foreach (NewPathFollowedPlatform platform in this.target) {
+			platform.enabled = !platform.enabled;
+		}
 	}
 }
