@@ -9,7 +9,6 @@ public class LevelManager : LevelManagerSingle {
 	[System.Serializable]
 	public class PlayerSettings {
 		public bool canDoubleJump;
-		public bool canTriggerGun;
 		public bool canSwitchGun;
 		public bool canBlastGun;
 		public TriggerGun.GunMode startGunMode;
@@ -18,7 +17,6 @@ public class LevelManager : LevelManagerSingle {
 			this.SetJumpMode(charController);
 			this.SetGunMode(triggerGun);
 			this.SetCanGunMode(triggerGun);
-			triggerGun.enabled = this.canTriggerGun;
 		}
 
 		public void SetJumpMode(FpsWalkerController charController) {

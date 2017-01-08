@@ -45,24 +45,24 @@ public class TriggerGun : MonoBehaviour {
 
 	void Awake() {
 		this.playerManager = this.GetComponent<PlayerManager>();
-
-	}
-
-	void Start() {
 		this.switchGun = this.GetComponent<SwitchGun>();
 		this.blastGun = this.GetComponent<BlastGun>();
 		this.gunAnimation = this.playerManager.gunAnimation;
+
+		this.gunAnimation.ChangeGunMode(this.gunMode);
+	}
+
+	void Start() {
+	
 	}
 
 	void Update() {
-		if (this.SwitchGunMode()) {
-			return;
-		}
+		this.SwitchGunMode();
 		if (!isOnChangeGunMode)
 			this.Trigger();
 	}
 
-	public bool SwitchGunMode() {
+	public void SwitchGunMode() {
 		bool inputSwitchGunMode = InputsManager.Instance.GetKey(Keys.FIRE2);
 		if (inputSwitchGunMode) {
 			if (this.gunMode == GunMode.BLAST && this.canSwitchGun) {
@@ -77,26 +77,13 @@ public class TriggerGun : MonoBehaviour {
 				}
 			}
 
-			return this.SetGunMode();
+			this.SetGunMode();
 		}
-		return false;
 	}
 
-	public bool SetGunMode() {
-		if ((this.gunMode == GunMode.BLAST) || this.gunMode == GunMode.SWITCH) {
-			this.playerManager.gun.gameObject.SetActive(true);
+	public void SetGunMode() {
 
 			this.GetGunAnimation.ChangeGunMode(this.gunMode);
-			return true;
-		} else {
-			// TODO : Animation GetGun
-			this.playerManager.gun.gameObject.SetActive(false);
-		}
-		return false;
-	}
-
-	public void EnableGun() {
-		this.playerManager.gun.gameObject.SetActive(true);
 	}
 
 	void Trigger() {
