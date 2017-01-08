@@ -10,6 +10,7 @@ public class SwitchButton : MonoBehaviour {
 	public enum ButtonBehaviour {
 		PLAY,
 		BACKFROMLEVEL,
+		STARTTUTORIEL,
 		LEVELBUMPERLOADER
 	}
 
@@ -26,6 +27,9 @@ public class SwitchButton : MonoBehaviour {
 			case ButtonBehaviour.LEVELBUMPERLOADER:
 				this.ButtonLevelBumperLoader();
 				break;
+			case ButtonBehaviour.STARTTUTORIEL:
+				this.ButtonStartTutoriel();
+				break;
 			default:
 		break;
 		}
@@ -33,12 +37,12 @@ public class SwitchButton : MonoBehaviour {
 	}
 
 	IEnumerator SelfDeactiveAfterWait() {
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.6f);
 		this.selfPathFP.gameObject.SetActive(false);
 	}
 
 	IEnumerator DeactiveAfterWait() {
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(0.6f);
 		this.goToDeactive.gameObject.SetActive(false);
 	}
 
@@ -69,5 +73,10 @@ public class SwitchButton : MonoBehaviour {
 	void ButtonLevelBumperLoader() {
 		SceneManager.LoadScene("Game");
 		SceneManager.LoadScene("Level - BumperLoader", LoadSceneMode.Additive);
+	}
+
+	void ButtonStartTutoriel() {
+		SceneManager.LoadScene("Game");
+		SceneManager.LoadScene("Level - StartTutoriel", LoadSceneMode.Additive);
 	}
 }

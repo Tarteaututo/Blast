@@ -8,7 +8,7 @@ public class OpenScene : Editor {
 	static string scene_LevelTest1 = "LevelTest - 1";
 	static string scene_LevelTest2 = "LevelTest - 2";
 	static string scene_LevelTest3 = "Level - BumperLoader"; 
-	static string scene_LevelTest4 = "Level - Progression-Orient"; 
+	static string scene_LevelTest4 = "Level - StartTutoriel"; 
 	static string scene_MenuRoom = "MenuRoom";
 	static string scenesFolderPath = "Assets/Resources/Scenes/";
 	static string sceneExtensiosn = ".unity";
@@ -34,7 +34,7 @@ public class OpenScene : Editor {
 		Open(scene_LevelTest3);
 	}
 
-	[MenuItem("OpenScene/Level - Progression-Orient", false, 12)]
+	[MenuItem("OpenScene/Level - StartTutoriel", false, 12)]
 	public static void OpenLevelTest4() {
 		Open(scene_LevelTest4);
 	}

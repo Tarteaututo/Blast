@@ -61,6 +61,10 @@ public class LevelManager : LevelManagerSingle {
 		this.triggerGun = this.player.GetComponent<TriggerGun>();
 		this.playerSettings.Set(this.charController, this.triggerGun);
 
+
+	}
+
+	void Start() {
 		this.spawns = FindObjectsOfType<Spawn>();
 		this.SpawnAtFirstAvailableSpawner();
 	}
@@ -76,7 +80,6 @@ public class LevelManager : LevelManagerSingle {
 				charRot = Quaternion.Euler(this.player.eulerAngles.x, element.transform.eulerAngles.y, this.player.eulerAngles.z);
 				camRot = Quaternion.Euler(element.transform.eulerAngles.x, camRot.eulerAngles.y, camRot.eulerAngles.z);
 
-				Debug.Log(charRot.eulerAngles  + " | " + camRot.eulerAngles);
 				this.player.GetComponent<FpsWalkerController>().mouseLook.SetTargetRot(charRot, camRot);
 				this.player.transform.rotation = charRot;
 				return;

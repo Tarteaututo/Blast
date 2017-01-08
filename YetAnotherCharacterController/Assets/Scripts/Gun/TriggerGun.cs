@@ -48,8 +48,13 @@ public class TriggerGun : MonoBehaviour {
 		this.switchGun = this.GetComponent<SwitchGun>();
 		this.blastGun = this.GetComponent<BlastGun>();
 		this.gunAnimation = this.playerManager.gunAnimation;
+		StartCoroutine(OnAwake());
+	}
 
+	IEnumerator OnAwake() {
+		yield return new WaitForEndOfFrame();
 		this.gunAnimation.ChangeGunMode(this.gunMode);
+
 	}
 
 	void Start() {
