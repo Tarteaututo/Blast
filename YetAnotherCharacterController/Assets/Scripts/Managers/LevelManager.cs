@@ -16,8 +16,8 @@ public class LevelManager : LevelManagerSingle {
 
 		public void Set(FpsWalkerController charController, TriggerGun triggerGun) {
 			this.SetJumpMode(charController);
-			this.SetCanGunMode(triggerGun);
 			this.SetGunMode(triggerGun);
+			this.SetCanGunMode(triggerGun);
 			triggerGun.enabled = this.canTriggerGun;
 		}
 

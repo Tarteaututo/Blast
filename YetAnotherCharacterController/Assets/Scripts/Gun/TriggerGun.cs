@@ -9,7 +9,8 @@ TODO : Editor qui montre les bool en readonly
 public class TriggerGun : MonoBehaviour {
 	public enum GunMode {
 		SWITCH,
-		BLAST
+		BLAST,
+		NONE
 	}
 	public GunMode gunMode = GunMode.SWITCH;
 
@@ -42,8 +43,12 @@ public class TriggerGun : MonoBehaviour {
 		}
 	}
 
-	void Start() {
+	void Awake() {
 		this.playerManager = this.GetComponent<PlayerManager>();
+
+	}
+
+	void Start() {
 		this.switchGun = this.GetComponent<SwitchGun>();
 		this.blastGun = this.GetComponent<BlastGun>();
 		this.gunAnimation = this.playerManager.gunAnimation;
@@ -64,6 +69,12 @@ public class TriggerGun : MonoBehaviour {
 				this.gunMode = GunMode.SWITCH;
 			} else if (this.gunMode == GunMode.SWITCH && this.canBlastGun) {
 				this.gunMode = GunMode.BLAST;
+			} else if (this.gunMode == GunMode.NONE) {
+				if (this.canSwitchGun) {
+					this.gunMode = GunMode.SWITCH;
+				} else if (this.canBlastGun) {
+					this.gunMode = GunMode.BLAST;
+				}
 			}
 
 			return this.SetGunMode();
@@ -73,13 +84,19 @@ public class TriggerGun : MonoBehaviour {
 
 	public bool SetGunMode() {
 		if ((this.gunMode == GunMode.BLAST) || this.gunMode == GunMode.SWITCH) {
+			this.playerManager.gun.gameObject.SetActive(true);
+
 			this.GetGunAnimation.ChangeGunMode(this.gunMode);
 			return true;
 		} else {
-			// Feedback cant change mode
-			Debug.Log("Cant change gun mode");
+			// TODO : Animation GetGun
+			this.playerManager.gun.gameObject.SetActive(false);
 		}
 		return false;
+	}
+
+	public void EnableGun() {
+		this.playerManager.gun.gameObject.SetActive(true);
 	}
 
 	void Trigger() {
