@@ -22,6 +22,10 @@ public class MouseLook {
 		m_CameraTargetRot = camera.localRotation;
 	}
 
+	public void SetTargetRot(Quaternion characterRot, Quaternion cameraRot) {
+		this.m_CharacterTargetRot = characterRot;
+		this.m_CameraTargetRot = cameraRot;
+	}
 
 	public void LookRotation(Transform character, Transform camera) {
 		float yRot = InputsManager.Instance.GetAxis(Keys.MOUSEX) * XSensitivity;

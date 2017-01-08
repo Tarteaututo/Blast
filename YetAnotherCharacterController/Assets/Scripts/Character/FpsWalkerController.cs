@@ -168,7 +168,6 @@ public class FpsWalkerController: MonoBehaviour {
 
 	void LateUpdate() {
 		this.mouseLook.LookRotation(this.transform, this.playerCam.transform);
-
 	}
 
 	// Store point that we're in contact with for use in FixedUpdate if needed
