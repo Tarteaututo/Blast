@@ -5,20 +5,19 @@ public class LevelManager : LevelManagerSingle {
 
 	[HideInInspector]
 	public Transform player;
+	Transform camPlayer;
 
 	[System.Serializable]
 	public class PlayerSettings {
 		public bool canDoubleJump;
-		public bool canTriggerGun;
 		public bool canSwitchGun;
 		public bool canBlastGun;
 		public TriggerGun.GunMode startGunMode;
 
 		public void Set(FpsWalkerController charController, TriggerGun triggerGun) {
 			this.SetJumpMode(charController);
-			this.SetCanGunMode(triggerGun);
 			this.SetGunMode(triggerGun);
-			triggerGun.enabled = this.canTriggerGun;
+			this.SetCanGunMode(triggerGun);
 		}
 
 		public void SetJumpMode(FpsWalkerController charController) {
@@ -49,18 +48,23 @@ public class LevelManager : LevelManagerSingle {
 	protected override void Awake() {
 		base.Awake();
 
-		this.player = GameObject.FindGameObjectWithTag("Player").transform;
-
+		if (!this.player)
+			this.player = GameObject.FindGameObjectWithTag("Player").transform;
 		if (player == null) {
 			Debug.LogError("GameManager : Player not set");
 			Debug.Break();
 			return;
 		}
 
+		this.camPlayer = this.player.GetComponent<PlayerManager>().camPlayer.transform;
 		this.charController = this.player.GetComponent<FpsWalkerController>();
 		this.triggerGun = this.player.GetComponent<TriggerGun>();
 		this.playerSettings.Set(this.charController, this.triggerGun);
 
+
+	}
+
+	void Start() {
 		this.spawns = FindObjectsOfType<Spawn>();
 		this.SpawnAtFirstAvailableSpawner();
 	}
@@ -69,7 +73,15 @@ public class LevelManager : LevelManagerSingle {
 		foreach (Spawn element in this.spawns) {
 			if (element.isActive) {
 				this.player.transform.position = element.transform.position;
-				this.player.transform.rotation = element.transform.rotation;
+				
+
+				Quaternion charRot = Quaternion.identity;
+				Quaternion camRot = Quaternion.identity;
+				charRot = Quaternion.Euler(this.player.eulerAngles.x, element.transform.eulerAngles.y, this.player.eulerAngles.z);
+				camRot = Quaternion.Euler(element.transform.eulerAngles.x, camRot.eulerAngles.y, camRot.eulerAngles.z);
+
+				this.player.GetComponent<FpsWalkerController>().mouseLook.SetTargetRot(charRot, camRot);
+				this.player.transform.rotation = charRot;
 				return;
 			}
 		}
@@ -87,6 +99,6 @@ public class LevelManager : LevelManagerSingle {
 		}
 
 		if (!safetyFlag)
-			Debug.LogError("GameManage.SetLastAvailableSpawner Probleme : aucun spawn ne corresponds");
+			Debug.LogError("GameManager.SetLastAvailableSpawner Probleme : aucun spawn ne corresponds");
 	}
 }

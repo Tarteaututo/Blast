@@ -9,7 +9,8 @@ TODO : Editor qui montre les bool en readonly
 public class TriggerGun : MonoBehaviour {
 	public enum GunMode {
 		SWITCH,
-		BLAST
+		BLAST,
+		NONE
 	}
 	public GunMode gunMode = GunMode.SWITCH;
 
@@ -42,44 +43,52 @@ public class TriggerGun : MonoBehaviour {
 		}
 	}
 
-	void Start() {
+	void Awake() {
 		this.playerManager = this.GetComponent<PlayerManager>();
 		this.switchGun = this.GetComponent<SwitchGun>();
 		this.blastGun = this.GetComponent<BlastGun>();
 		this.gunAnimation = this.playerManager.gunAnimation;
+		StartCoroutine(OnAwake());
+	}
+
+	IEnumerator OnAwake() {
+		yield return new WaitForEndOfFrame();
+		this.gunAnimation.ChangeGunMode(this.gunMode);
+
+	}
+
+	void Start() {
+	
 	}
 
 	void Update() {
-		if (this.SwitchGunMode()) {
-			return;
-		}
+		this.SwitchGunMode();
 		if (!isOnChangeGunMode)
 			this.Trigger();
 	}
 
-	public bool SwitchGunMode() {
+	public void SwitchGunMode() {
 		bool inputSwitchGunMode = InputsManager.Instance.GetKey(Keys.FIRE2);
 		if (inputSwitchGunMode) {
 			if (this.gunMode == GunMode.BLAST && this.canSwitchGun) {
 				this.gunMode = GunMode.SWITCH;
 			} else if (this.gunMode == GunMode.SWITCH && this.canBlastGun) {
 				this.gunMode = GunMode.BLAST;
+			} else if (this.gunMode == GunMode.NONE) {
+				if (this.canSwitchGun) {
+					this.gunMode = GunMode.SWITCH;
+				} else if (this.canBlastGun) {
+					this.gunMode = GunMode.BLAST;
+				}
 			}
 
-			return this.SetGunMode();
+			this.SetGunMode();
 		}
-		return false;
 	}
 
-	public bool SetGunMode() {
-		if ((this.gunMode == GunMode.BLAST) || this.gunMode == GunMode.SWITCH) {
+	public void SetGunMode() {
+
 			this.GetGunAnimation.ChangeGunMode(this.gunMode);
-			return true;
-		} else {
-			// Feedback cant change mode
-			Debug.Log("Cant change gun mode");
-		}
-		return false;
 	}
 
 	void Trigger() {

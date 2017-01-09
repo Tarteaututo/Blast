@@ -38,7 +38,7 @@ public class DebugHUD : MonoBehaviour {
 		this.mouseLook.SetCursorLock(state);
 
 		this.charController.enabled = state;
-		if (this.playerSettings.canTriggerGun)
+		if (this.playerSettings.startGunMode == TriggerGun.GunMode.NONE)
 			this.triggerGun.enabled = state;
 	}
 
@@ -58,13 +58,6 @@ public class DebugHUD : MonoBehaviour {
 		this.playerSettings.SetJumpMode(this.charController);
 
 		feedback.color = feedbackColors[this.playerSettings.canDoubleJump.GetHashCode()];
-	}
-
-	public void CanTriggerGunButton(Image feedback) {
-		this.playerSettings.canTriggerGun = !this.playerSettings.canTriggerGun;
-		this.playerSettings.SetCanGunMode(this.triggerGun);
-
-		feedback.color = feedbackColors[this.playerSettings.canTriggerGun.GetHashCode()];
 	}
 
 	public void CanSwitchGunButton(Image feedback) {

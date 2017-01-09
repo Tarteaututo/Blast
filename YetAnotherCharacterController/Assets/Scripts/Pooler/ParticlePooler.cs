@@ -3,6 +3,7 @@ using System.Collections;
 
 public class ParticlePooler : MonoBehaviour {
 	Transform poolFolder;
+	Transform weaponSight;
 
 	public Transform PoolFolder {
 		get {
@@ -51,11 +52,10 @@ public class ParticlePooler : MonoBehaviour {
 	public ActiveRandom activeRandom;
 
 	void Awake() {
-		Debug.Log("Pooler : Awake");
+		this.weaponSight = this.transform.FindChild("WeaponSight");
 	}
 
 	void Start() {
-		Debug.Log("Pooler : Start");
 	}
 
 
@@ -79,7 +79,7 @@ public class ParticlePooler : MonoBehaviour {
 	void SpawnObject() {
 		MeshPooled prefab = objectPooledPrefabs[Random.Range(0, this.objectPooledPrefabs.Length)];
 		MeshPooled spawn = prefab.GetPooledInstance<MeshPooled>(this.PoolFolder);
-		spawn.transform.localPosition = this.transform.position;
+		spawn.transform.localPosition = this.weaponSight.position;
 
 		this.RandomHandler(spawn, prefab);
 		this.SetMaterials(spawn, prefab);
@@ -94,9 +94,9 @@ public class ParticlePooler : MonoBehaviour {
 		if (this.activeRandom.rotation)
 			spawn.transform.localRotation = Random.rotation;
 		if (this.activeRandom.velocity) {
-			spawn.rb.velocity = this.transform.up * velocity + Random.onUnitSphere * this.velocityRange.RandomInRange;
+			spawn.rb.velocity = this.weaponSight.up * velocity + Random.onUnitSphere * this.velocityRange.RandomInRange;
 		} else {
-			spawn.rb.velocity = this.transform.up * velocity;
+			spawn.rb.velocity = this.weaponSight.up * velocity;
 		}
 	}
 

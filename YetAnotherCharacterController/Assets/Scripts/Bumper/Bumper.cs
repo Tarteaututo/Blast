@@ -44,6 +44,7 @@ public class Bumper : MonoBehaviour {
 	protected virtual void Update() {
 		if (this.hasTimer && this.timeUntilNextTimer != -1) {
 			if (this.timeUntilNextTimer > Time.time) {
+			Debug.Log(this.animationTimer);
 				this.animationTimer.UpdateScale(this.timeUntilNextTimer - Time.time, this.timer);
 			} else {
 				this.animationTimer.UpdateScale(1, 1);

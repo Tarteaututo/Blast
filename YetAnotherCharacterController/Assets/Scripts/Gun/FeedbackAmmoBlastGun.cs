@@ -5,7 +5,7 @@ using System.Collections;
 public class FeedbackAmmoBlastGun : MonoBehaviour {
 	Image ammoIcon;
 	
-	void Start() {
+	void Awake() {
 		this.ammoIcon = this.GetComponent<Image>();
 	}
 

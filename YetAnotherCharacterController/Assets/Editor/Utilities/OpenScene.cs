@@ -7,10 +7,16 @@ public class OpenScene : Editor {
 	static string scene_Game = "Game";
 	static string scene_LevelTest1 = "LevelTest - 1";
 	static string scene_LevelTest2 = "LevelTest - 2";
-	static string scene_LevelTest3 = "Level - BumperLoader";
-
+	static string scene_LevelTest3 = "Level - BumperLoader"; 
+	static string scene_LevelTest4 = "Level - StartTutoriel"; 
+	static string scene_MenuRoom = "MenuRoom";
 	static string scenesFolderPath = "Assets/Resources/Scenes/";
 	static string sceneExtensiosn = ".unity";
+
+	[MenuItem("OpenScene/MenuRoom", false, 5)]
+	public static void OpenMainMenu3D() {
+		Open(scene_MenuRoom);
+	}
 
 	[MenuItem("OpenScene/LevelTest - 1", false, 11)]
 	public static void OpenLevelTest1() {
@@ -23,15 +29,18 @@ public class OpenScene : Editor {
 		Open(scene_LevelTest2);
 	}
 
-	[MenuItem("OpenScene/LevelTest - 3", false, 12)]
+	[MenuItem("OpenScene/Level - BumperLoader", false, 12)]
 	public static void OpenLevelTest3() {
 		Open(scene_LevelTest3);
 	}
 
-	[MenuItem("OpenScene/Level - BumperLoader", false, 12)]
+	[MenuItem("OpenScene/Level - StartTutoriel", false, 12)]
 	public static void OpenLevelTest4() {
-		Open(scene_LevelTest3);
+		Open(scene_LevelTest4);
 	}
+
+
+
 
 	static void Open(string scene) {
 		if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) {

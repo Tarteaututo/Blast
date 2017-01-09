@@ -19,9 +19,14 @@ public class GunAnimation : MonoBehaviour {
 
 	//ChangeGunMode
 	public void ChangeGunMode(TriggerGun.GunMode gunMode) {
-		this.GetAnimator.SetInteger("GunMode", (int)gunMode);
+		StartCoroutine(OnChangeGunMode(gunMode));
 	}
 	//
+
+	IEnumerator OnChangeGunMode(TriggerGun.GunMode gunMode) {
+		yield return new WaitForEndOfFrame();
+		this.GetAnimator.SetInteger("GunMode", (int)gunMode);
+	}
 
 	//Switch
 	public void PlaySwitchShoot() {
