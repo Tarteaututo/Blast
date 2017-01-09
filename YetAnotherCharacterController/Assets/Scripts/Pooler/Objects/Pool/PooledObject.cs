@@ -11,7 +11,8 @@ public class PooledObject : MonoBehaviour {
 		if (Pool) {
 			Pool.AddObject(this);
 		} else {
-			Destroy(this.gameObject);
+			if (this != null)
+				Destroy(this.gameObject);
 		}
 	}
 

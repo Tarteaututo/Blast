@@ -24,12 +24,17 @@ public class Spawn : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Player")) {
 			if (!this.isActive) {
-				GameManager.Instance.SetLastAvailableSpawner(this);
+				LevelManager.Instance.SetLastAvailableSpawner(this);
 				if (!this.isDiscovered) {
 					this.isDiscovered = true;
 				}
 			}
-			other.GetComponent<BlastGun>().Ammo = reloadAmmo;
+			BlastGun playerGun = other.GetComponent<BlastGun>();
+			if (playerGun.Ammo < reloadAmmo) {
+				int reload = reloadAmmo - playerGun.Ammo;
+				playerGun.Ammo += reload;
+			}
+
 			this.ReloadLinkedCharger();
 			this.feedbackSpawner.SetFeedbackColors(this.isActive, this.isDiscovered);
 		}

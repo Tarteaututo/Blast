@@ -28,6 +28,8 @@ public class NewLoader: MonoBehaviour {
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
 
+		if (!this.hasTimer)
+			this.animationTimer.gameObject.SetActive(false);
 		this.isActive = this.isActiveAtStart;
 
 		this.blastAnimator.SetBool("IsLoaded", this.isActive);
@@ -37,15 +39,14 @@ public class NewLoader: MonoBehaviour {
 		} else {
 			this.meshRenderer.material = this.inactiveMaterial;
 		}
-		
+
+	}
+
+	void OnEnable() {
 		if (this.linkedElements != null) {
 			this.linkedElements(this.isActive);
 		} else {
 		}
-	}
-
-	void Start() {
-
 	}
 
 	void OnTriggerEnter(Collider other) {
@@ -123,10 +124,12 @@ public class NewLoader: MonoBehaviour {
 		}
 
 		if (this.linkedElements != null) {
-			if (this.isActiveAtStart != this.isActive)
+			if (this.isActiveAtStart != this.isActive) {
 				this.linkedElements(this.isActive);
-			else
+			}
+			else {
 				this.linkedElements(!this.isActive);
+			}
 		}
 	}
 }

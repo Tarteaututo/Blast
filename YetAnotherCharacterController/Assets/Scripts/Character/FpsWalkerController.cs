@@ -141,7 +141,6 @@ public class FpsWalkerController: MonoBehaviour {
 	}
 
 	void Update() {
-
 		this.inputX = Input.GetAxis("Horizontal");
 		this.inputY = Input.GetAxis("Vertical");
 		this.inputJump = Input.GetButtonDown("Jump");
@@ -151,6 +150,7 @@ public class FpsWalkerController: MonoBehaviour {
 				moveDirection.y = jumpSpeed;
 			}
 		} else if (this.canDoubleJump && this.doubleJumpActive) {
+
 			if (this.inputJump) {
 				moveDirection.y = jumpSpeed;
 				this.doubleJumpActive = false;
@@ -168,7 +168,6 @@ public class FpsWalkerController: MonoBehaviour {
 
 	void LateUpdate() {
 		this.mouseLook.LookRotation(this.transform, this.playerCam.transform);
-
 	}
 
 	// Store point that we're in contact with for use in FixedUpdate if needed

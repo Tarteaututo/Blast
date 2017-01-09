@@ -13,6 +13,7 @@ public class LoaderLinkedBumper : LoaderLinked {
 
 	protected override void SetState(bool isActive) {
 		foreach (LinkedBumperSettings bumperSettings in this.linkedBumpers) {
+			bumperSettings.Initialize();
 			bumperSettings.bumper.NewSwitchByLoader();
 		}
 	}

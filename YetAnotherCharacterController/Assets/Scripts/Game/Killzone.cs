@@ -10,6 +10,6 @@ public class Killzone : MonoBehaviour {
 	}
 
 	void KillPlayer(Transform player) {
-		GameManager.Instance.SpawnAtFirstAvailableSpawner();
+		LevelManager.Instance.SpawnAtFirstAvailableSpawner();
 	}
 }
