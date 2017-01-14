@@ -148,7 +148,7 @@ public class Bumper : MonoBehaviour {
 		this.isOnBump = false;
 
 		if (this.feedbackColor)
-			this.feedbackColor.Toggle(this.isBumpActive);
+			this.feedbackColor.SetState(this.isBumpActive);
 		if (this.isBumpActive) {
 			this.particleSystem.Play();
 			this.overlayRenderer.material = this.activeMaterial;

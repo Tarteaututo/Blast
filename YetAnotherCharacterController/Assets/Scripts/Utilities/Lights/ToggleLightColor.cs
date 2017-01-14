@@ -11,8 +11,7 @@ public class ToggleLightColor : MonoBehaviour {
 	bool isOnLerp = false;
 	bool isActive = false;
 	[SerializeField] float lerpTime = 0f;
-	float currentLerpTime;
-
+	float currentLerpTime = 0f;
 
 	Light GetLight {
 		get {
@@ -22,12 +21,12 @@ public class ToggleLightColor : MonoBehaviour {
 		}
 	}
 
-	public void Toggle2(bool isActive) {
-		this.isOnLerp = true;
-		this.isActive = isActive;
+	void Awake() {
+		currentLerpTime = 12f;
+
 	}
 
-	public void Toggle(bool isActive) {
+	public void SetState(bool isActive) {
 		if (isActive) {
 			this.GetLight.color = this.activeColor;
 		} else {
@@ -35,20 +34,26 @@ public class ToggleLightColor : MonoBehaviour {
 		}
 	}
 
+	public void SetStateLerp(bool isActive) {
+		Debug.Log(isActive);
+		this.isOnLerp = true;
+		this.isActive = isActive;
+	}
+
 	void Update() {
 		if (this.isOnLerp) {
 			currentLerpTime += Time.deltaTime;
-			if (this.currentLerpTime > this.lerpTime) {
-				this.currentLerpTime = this.lerpTime;
+			if (this.currentLerpTime < this.lerpTime) {
+				this.currentLerpTime = 0;
 				this.isOnLerp = false;
 
 			}
 			float perc = this.currentLerpTime / this.lerpTime;
 
 			if (this.isActive)
-				this.GetLight.color = Color.Lerp(this.activeColor, this.unactiveColor, perc);
-			else
 				this.GetLight.color = Color.Lerp(this.unactiveColor, this.activeColor, perc);
+			else
+				this.GetLight.color = Color.Lerp(this.activeColor, this.unactiveColor, perc);
 		}
 	}
 }

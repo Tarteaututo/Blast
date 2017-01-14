@@ -46,7 +46,7 @@ public class NewLoader: MonoBehaviour {
 
 	void OnEnable() {
 		if (this.feedbackColor)
-			this.feedbackColor.Toggle(this.isActive);
+			this.feedbackColor.SetState(this.isActive);
 		if (this.linkedElements != null) {
 			this.linkedElements(this.isActive);
 		} else {
@@ -121,7 +121,7 @@ public class NewLoader: MonoBehaviour {
 	void SetState() {
 		this.blastAnimator.SetBool("IsLoaded", this.isActive);
 		if (this.feedbackColor)
-			this.feedbackColor.Toggle(this.isActive);
+			this.feedbackColor.SetState(this.isActive);
 
 		if (this.isActive) {
 			this.meshRenderer.material = this.activeMaterial;
