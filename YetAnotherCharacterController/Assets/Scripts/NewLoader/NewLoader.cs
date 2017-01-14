@@ -16,6 +16,7 @@ public class NewLoader: MonoBehaviour {
 	MeshRenderer meshRenderer;
 	Animator blastAnimator;
 	ScaleWithTimer animationTimer;
+	ToggleLightColor feedbackColor;
 	private bool isActive;
 	float timeUntilSwitchState;
 	[HideInInspector] public bool isOnTimer = false;
@@ -27,6 +28,7 @@ public class NewLoader: MonoBehaviour {
 		this.meshRenderer = this.GetComponentInChildren<MeshRenderer>();
 		this.blastAnimator = this.GetComponentInChildren<Animator>();
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
+		this.feedbackColor = this.GetComponentInChildren<ToggleLightColor>();
 
 		if (!this.hasTimer)
 			this.animationTimer.gameObject.SetActive(false);
@@ -43,6 +45,8 @@ public class NewLoader: MonoBehaviour {
 	}
 
 	void OnEnable() {
+		if (this.feedbackColor)
+			this.feedbackColor.Toggle(this.isActive);
 		if (this.linkedElements != null) {
 			this.linkedElements(this.isActive);
 		} else {
@@ -116,7 +120,9 @@ public class NewLoader: MonoBehaviour {
 	
 	void SetState() {
 		this.blastAnimator.SetBool("IsLoaded", this.isActive);
-		
+		if (this.feedbackColor)
+			this.feedbackColor.Toggle(this.isActive);
+
 		if (this.isActive) {
 			this.meshRenderer.material = this.activeMaterial;
 		} else {
