@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Script adapté de : http://wiki.unity3d.com/index.php?title=FPSWalkerEnhanced
+/// </summary>
+
 [RequireComponent(typeof(CharacterController))]
 public class FpsWalkerController: MonoBehaviour {
 
@@ -148,6 +152,7 @@ public class FpsWalkerController: MonoBehaviour {
 		if (grounded) {
 			if (this.inputJump) {
 				moveDirection.y = jumpSpeed;
+				//StartCoroutine(this.OnLongJump());
 			}
 		} else if (this.canDoubleJump && this.doubleJumpActive) {
 
@@ -164,6 +169,18 @@ public class FpsWalkerController: MonoBehaviour {
 		// FixedUpdate is a poor place to use GetButtonDown, since it doesn't necessarily run every frame and can miss the event)
 		if (toggleRun && grounded && Input.GetButtonDown("Run"))
 			speed = (speed == walkSpeed ? runSpeed : walkSpeed);
+	}
+
+	IEnumerator OnLongJump() {
+		yield return new WaitForSeconds(0.2f);
+		float timer = Time.time;
+		while (timer < Time.time + 2f) {
+			if (Input.GetButton("Jump")) {
+				moveDirection.y += jumpSpeed / 2;
+				break;
+			}
+			yield return null;
+		}
 	}
 
 	void LateUpdate() {

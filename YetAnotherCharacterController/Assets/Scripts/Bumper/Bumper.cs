@@ -1,6 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 
+/// Concernant les bumps, j'ai fais le choix de déplacements très séquentiels : 
+/// 
+///		pas de physics
+///		pas d'orientation du déplacement
+///		
+/// Cela me permettait de plus facilement mettre en place des metrics précises.
+/// </summary>
+
 public class Bumper : MonoBehaviour {
 
 
@@ -22,6 +32,7 @@ public class Bumper : MonoBehaviour {
 
 	protected ScaleWithTimer animationTimer;
 	protected MeshRenderer overlayRenderer;
+	protected ToggleLightColor feedbackColor;
 	[HideInInspector] protected ParticleSystem particleSystem;
 	protected bool isOnBump = false;
 	protected bool isOnTimer = false;
@@ -30,7 +41,7 @@ public class Bumper : MonoBehaviour {
 
 	protected virtual void Awake() {
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
-
+		this.feedbackColor = this.GetComponentInChildren<ToggleLightColor>();
 	}
 
 	protected virtual void Start() { // not in selfload
@@ -62,6 +73,7 @@ public class Bumper : MonoBehaviour {
 			this.BumpBlastProjectileToPosition(other.gameObject);
 		}
 	}
+
 
 	// Bump blast projectile
 	protected void BumpBlastProjectileToPosition(GameObject projectile) {
@@ -146,6 +158,8 @@ public class Bumper : MonoBehaviour {
 		yield return new WaitForSeconds(0.25f);
 		this.isOnBump = false;
 
+		if (this.feedbackColor)
+			this.feedbackColor.SetState(this.isBumpActive);
 		if (this.isBumpActive) {
 			this.particleSystem.Play();
 			this.overlayRenderer.material = this.activeMaterial;

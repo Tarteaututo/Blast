@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Tentative d'encapsulation de la gestion inputs, mais je ne suis pas fier du résultat.
+/// </summary>
+
 public class InputsManager : SingleInputsManager {
     bool isLastDPADXDown = false;
     bool isLastDPADYDown = false;
