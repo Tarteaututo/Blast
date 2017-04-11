@@ -1,6 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// 
+/// Concernant les bumps, j'ai fais le choix de déplacements très séquentiels : 
+/// 
+///		pas de physics
+///		pas d'orientation du déplacement
+///		
+/// Cela me permettait de plus facilement mettre en place des metrics précises.
+/// </summary>
+
 public class Bumper : MonoBehaviour {
 
 
@@ -63,6 +73,7 @@ public class Bumper : MonoBehaviour {
 			this.BumpBlastProjectileToPosition(other.gameObject);
 		}
 	}
+
 
 	// Bump blast projectile
 	protected void BumpBlastProjectileToPosition(GameObject projectile) {

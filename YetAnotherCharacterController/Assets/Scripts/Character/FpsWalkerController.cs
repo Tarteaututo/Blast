@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Script adapté de : http://wiki.unity3d.com/index.php?title=FPSWalkerEnhanced
+/// </summary>
+
 [RequireComponent(typeof(CharacterController))]
 public class FpsWalkerController: MonoBehaviour {
 
