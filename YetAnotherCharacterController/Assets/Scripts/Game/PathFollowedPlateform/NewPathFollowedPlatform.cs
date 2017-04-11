@@ -11,6 +11,7 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 	public iTween.LoopType loopType = iTween.LoopType.none;
 
 	GameObject plateform;
+	PlatformFeedback platformFeedback;
 	[SerializeField]
 	public List<List<Transform>> path = new List<List<Transform>>();
 
@@ -28,15 +29,19 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 
 	void Start() {
 		this.isActive = this.isActiveAtStart;
+		if (this.platformFeedback)
+			this.platformFeedback.Init(this.isActive);
 
-		if (!this.isLinked && this.isActive) {
-
-			this.Move(true);
+		if (!this.isLinked) {
+			if (this.isActive) {
+				this.Move(true);
+			}
 		}
 	}
 
 	void GetPath() {
 		this.plateform = this.transform.FindChild("Plateform").gameObject;
+		this.GetPlatformFeedback();
 
 		Transform pathFolder = this.transform.FindChild("PathsFolder");
 
@@ -47,6 +52,10 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 			}
 			this.path.Add(pathContainer);
 		}
+	}
+
+	void GetPlatformFeedback() {
+		this.platformFeedback = this.plateform.transform.FindChild("Mesh").GetComponentInChildren<PlatformFeedback>();
 	}
 
 	public void Move(bool hasToMove) {
@@ -79,6 +88,9 @@ public class NewPathFollowedPlatform : MonoBehaviour {
 
 	void OnBeginMove() {
 		this.isActive = true;
+
+		if (this.platformFeedback)
+			this.platformFeedback.SwitchState();
 	}
 
 	void OnEndMove() {

@@ -22,6 +22,7 @@ public class Bumper : MonoBehaviour {
 
 	protected ScaleWithTimer animationTimer;
 	protected MeshRenderer overlayRenderer;
+	protected ToggleLightColor feedbackColor;
 	[HideInInspector] protected ParticleSystem particleSystem;
 	protected bool isOnBump = false;
 	protected bool isOnTimer = false;
@@ -30,7 +31,7 @@ public class Bumper : MonoBehaviour {
 
 	protected virtual void Awake() {
 		this.animationTimer = this.GetComponentInChildren<ScaleWithTimer>();
-
+		this.feedbackColor = this.GetComponentInChildren<ToggleLightColor>();
 	}
 
 	protected virtual void Start() { // not in selfload
@@ -146,6 +147,8 @@ public class Bumper : MonoBehaviour {
 		yield return new WaitForSeconds(0.25f);
 		this.isOnBump = false;
 
+		if (this.feedbackColor)
+			this.feedbackColor.SetState(this.isBumpActive);
 		if (this.isBumpActive) {
 			this.particleSystem.Play();
 			this.overlayRenderer.material = this.activeMaterial;
